@@ -1,24 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from './components/Header';
+import SearchResponce from './pages/SearchResponcePage';
+import SearchPage from './pages/SearchPage';
+import Login from "./components/Login";
+import Register from "./components/Register";
+import MyFlightsPage from "./pages/MyFlightsPage";
+import UpdateUsernamePage from "./pages/UpdateUsernamePage";
+import UpdatePasswordPage from "./pages/UpdatePasswordForm";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Router>
+    <div>
+      <Header />
+      <main>
+        <Routes>
+          <Route path="/" element={
+            <>
+            <SearchPage />
+            </>
+          } />
+            <Route path="/login" element={
+            <>
+            <Login />
+            </>
+          } />
+            <Route path="/register" element={
+            <>
+            <Register />
+            </>
+          } />
+            <Route path="/found" element={
+            <>
+            <SearchResponce />
+            </>
+          } />
+            <Route path="/reservation" element={
+            <>
+            <MyFlightsPage/>
+            </>
+          } />
+            <Route path="/wallet" element={
+            <>
+            {/* <Pet /> */}
+            </>
+          } />
+           <Route path="/username" element={
+            <>
+            <UpdateUsernamePage />
+            </>
+          } />
+             <Route path="/password" element={
+            <>
+            <UpdatePasswordPage />
+            </>
+          } />
+        </Routes>
+      </main>
     </div>
+  </Router>
   );
 }
 

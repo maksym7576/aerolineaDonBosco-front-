@@ -1,0 +1,83 @@
+/* Основні стилі форми */
+.search-form {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 40px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-title {
+    font-size: 24px;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.form-subtitle {
+    font-size: 18px;
+    color: #34495e;
+    margin: 10px 0 5px; /* Залишаємо існуючі відступи */
+    font-weight: 500;
+}
+
+/* Додано нижній відступ для підписів */
+.form-subtitle:last-child {
+    margin-bottom: 10px; /* Відступ між підписом дати та інпутом дати */
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+.form-input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 6px rgba(52, 152, 219, 0.4);
+    outline: none;
+}
+
+.form-input::placeholder {
+    color: #aaa;
+}
+
+.form-button {
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+    background-color: #2980b9;
+}
+
+.form-button:active {
+    background-color: #1f618d;
+}
