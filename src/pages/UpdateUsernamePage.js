@@ -20,7 +20,6 @@ const UpdateUsernamePage = () => {
 
     return (
         <div className="update-username-page">
-            <h2>Update Username</h2>
             {error && <p className="error">{error}</p>}
             <UpdateUsernameForm onUpdate={handleUpdate} />
         </div>

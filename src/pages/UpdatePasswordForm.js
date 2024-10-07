@@ -20,7 +20,6 @@ const UpdatePasswordPage = () => {
 
     return (
         <div className="update-password-page">
-            <h2>Update Password</h2>
             {error && <p className="error">{error}</p>}
             <UpdatePasswordForm onUpdate={handleUpdate} />
         </div>

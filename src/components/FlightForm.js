@@ -1,63 +1,70 @@
+// FlightForm.js
 import React, { useState } from 'react';
 import FlightService from '../services/FlightService';
 import FlightImageService from '../services/FlightImageService';
+import '../styles/FlightForm.css';
 
 const FlightForm = ({ passengers, routes }) => {
-    const [selectedOriginId, setSelectedOriginId] = useState('');
-    const [selectedDestinationId, setSelectedDestinationId] = useState('');
+    const [selectedRoutes, setSelectedRoutes] = useState([]);
     const [selectedPassengerId, setSelectedPassengerId] = useState('');
     const [departureTime, setDepartureTime] = useState('');
     const [costEuro, setCostEuro] = useState('');
-    const [file, setFile] = useState(null); // Зберігаємо файл
+    const [file, setFile] = useState(null);
     const [error, setError] = useState('');
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]); // Зберігаємо обраний файл
+        setFile(e.target.files[0]);
+    };
+
+    const handleRouteClick = (route) => {
+        const index = selectedRoutes.findIndex(r => r.id === route.id);
+
+        if (index === -1) {
+            if (selectedRoutes.length < 2) {
+                setSelectedRoutes([...selectedRoutes, route]);
+            }
+        } else {
+            const updatedRoutes = selectedRoutes.filter(r => r.id !== route.id);
+            setSelectedRoutes(updatedRoutes);
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Перевірка всіх полів
-        if (!selectedOriginId || !selectedDestinationId || !selectedPassengerId || !departureTime || !costEuro || !file) {
+        if (selectedRoutes.length < 2 || !selectedPassengerId || !departureTime || !costEuro || !file) {
             setError('All fields are required.');
             return;
         }
 
-        try {
-            const token = localStorage.getItem('token'); // Отримуємо токен з localStorage
+        const [origin, destination] = selectedRoutes;
 
-            // Створення нового польоту
-            const newFlight = { 
-                departureTime, 
+        try {
+            const token = localStorage.getItem('token');
+
+            const newFlight = {
+                departureTime,
                 availableSeat: true,
-                destination: { id: selectedDestinationId },
-                origin: { id: selectedOriginId },
+                destination: { id: destination.id },
+                origin: { id: origin.id },
                 passengers: { id: selectedPassengerId },
-                costEuro: parseFloat(costEuro)
+                costEuro: parseFloat(costEuro),
             };
 
-            // Відправка запиту на створення польоту
             const createdFlight = await FlightService.createFlight(newFlight, token);
             console.log('Flight created successfully:', createdFlight);
 
-            // Завантаження зображення після створення польоту
-            const formData = new FormData(); // Використовуємо form-data
+            const formData = new FormData();
             formData.append('file', file);
-
-            // Відправка запиту на завантаження зображення
             await FlightImageService.uploadFlightImage(createdFlight.id, formData, token);
             console.log('Flight image uploaded successfully.');
 
-            // Очищення форми після успішного запиту
-            setSelectedOriginId('');
-            setSelectedDestinationId('');
+            setSelectedRoutes([]);
             setSelectedPassengerId('');
             setDepartureTime('');
             setCostEuro('');
             setFile(null);
             setError('');
-
         } catch (err) {
             setError('Failed to create flight or upload image: ' + (err.response?.data?.message || err.message));
             console.error(err);
@@ -65,55 +72,71 @@ const FlightForm = ({ passengers, routes }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="origin">Select Origin:</label>
-                <select onChange={(e) => setSelectedOriginId(e.target.value)} value={selectedOriginId}>
-                    <option value="">Select Origin</option>
-                    {routes.map(route => (
-                        <option key={route.id} value={route.id}>
+        <div className="flight-form-container">
+            <form onSubmit={handleSubmit} className="flight-form">
+                <h4>Select Routes:</h4>
+                <div className="button-group">
+                    {routes.map((route) => (
+                        <button
+                            key={route.id}
+                            className={`route-button ${selectedRoutes.find(r => r.id === route.id) ? 'active' : ''}`}
+                            onClick={() => handleRouteClick(route)}
+                            type="button"
+                        >
                             {route.country}, {route.city}
-                        </option>
+                        </button>
                     ))}
-                </select>
-            </div>
-            <div>
-                <label htmlFor="destination">Select Destination:</label>
-                <select onChange={(e) => setSelectedDestinationId(e.target.value)} value={selectedDestinationId}>
-                    <option value="">Select Destination</option>
-                    {routes.map(route => (
-                        <option key={route.id} value={route.id}>
-                            {route.country}, {route.city}
-                        </option>
+                </div>
+
+                <h4>Select Passenger:</h4>
+                <div className="button-group">
+                    {passengers.map((passenger) => (
+                        <button
+                            key={passenger.id}
+                            className={`passenger-button ${selectedPassengerId === passenger.id ? 'active' : ''}`}
+                            onClick={() => setSelectedPassengerId(passenger.id)}
+                            type="button"
+                        >
+                            Capacity: {passenger.capacity}, Reserved: {passenger.reservedSeats}
+                        </button>
                     ))}
-                </select>
-            </div>
-            <div>
-                <label htmlFor="passenger">Select Passenger:</label>
-                <select onChange={(e) => setSelectedPassengerId(e.target.value)} value={selectedPassengerId}>
-                    <option value="">Select Passenger</option>
-                    {passengers.map(passenger => (
-                        <option key={passenger.id} value={passenger.id}>
-                            Capacity: {passenger.capacity}, Reserved Seats: {passenger.reservedSeats}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <input 
-                type="datetime-local" 
-                value={departureTime} 
-                onChange={(e) => setDepartureTime(e.target.value)} 
-            />
-            <input 
-                type="number" 
-                placeholder="Cost in Euro" 
-                value={costEuro} 
-                onChange={(e) => setCostEuro(e.target.value)} 
-            />
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button type="submit">Create Flight</button>
-        </form>
+                </div>
+
+                <div className="input-container">
+                    <input
+                        type="datetime-local"
+                        value={departureTime}
+                        onChange={(e) => setDepartureTime(e.target.value)}
+                        placeholder="Departure Time"
+                    />
+                    <input
+                        type="number"
+                        placeholder="Cost in Euro"
+                        value={costEuro}
+                        onChange={(e) => setCostEuro(e.target.value)}
+                    />
+                </div>
+
+                <div className="file-input-container">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="file-input"
+                        id="file-input"
+                    />
+                    <label htmlFor="file-input" className="file-input-label">
+                        Upload Image
+                    </label>
+                </div>
+
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+
+                <div className="submit-button-container">
+                    <button type="submit" className="submit-button">Create Flight</button>
+                </div>
+            </form>
+        </div>
     );
 };
 

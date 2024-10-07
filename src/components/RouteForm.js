@@ -1,5 +1,7 @@
+// RouteForm.js
 import React, { useState } from 'react';
 import RoutesService from '../services/RoutesService';
+import '../styles/RouteForm.css'; // Імпортуємо стилі
 
 const RouteForm = ({ onRouteAdded }) => {
     const [country, setCountry] = useState('');
@@ -28,7 +30,7 @@ const RouteForm = ({ onRouteAdded }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="route-form-container">
             <input 
                 type="text" 
                 placeholder="Country" 

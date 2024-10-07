@@ -7,6 +7,10 @@ const Header = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [wallet, setWallet] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(false); // Стан для управління відкриттям меню
+
+    const userRole = user ? user.role : null; 
+    console.log(userRole);
 
     const updateUserData = () => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -53,22 +57,33 @@ const Header = () => {
             </div>
 
             <div className="header-right">
-                {user ? (
+                {user && (
                     <div className="user-info-container">
                         <span className="user-info" tabIndex={0}>{user.username}</span>
                         <button className="btn btn-flights" onClick={() => navigate('/reservation')}>My Flights</button>
-                        <button className="btn btn-flights" onClick={() => navigate('/replenishment')}>Add money</button>
-                        <button className="btn btn-flights" onClick={() => navigate('/admin')}>Add money</button>
-                        <div className="user-dropdown">
-                            <span className="welcome-message">Welcome, {user.username}!</span>
-                            <span className="user-money">Balance: {wallet ? wallet.euro : 'Loading...'}</span>
-                            <button className="btn btn-dropdown" onClick={() => navigate('/settings')}>Settings</button>
-                            <button className="btn btn-dropdown" onClick={() => navigate('/username')}>Update username</button>
-                            <button className="btn btn-dropdown" onClick={() => navigate('/password')}>Update password</button>
-                            <button className="btn btn-danger" onClick={logout}>Logout</button>
-                        </div>
+                        {userRole === 'ADMIN' && (
+                            <button className="btn btn-flights" onClick={() => navigate('/admin')}>
+                                Admin
+                            </button>
+                        )}
+                        <button className="btn btn-menu" onClick={() => setMenuOpen(!menuOpen)}>
+                            Menu
+                        </button>
+
+                        {menuOpen && (
+                            <div className="menu-dropdown">
+                                <span className="welcome-message">Welcome, {user.username}!</span>
+                                <span className="user-money">Balance: {wallet ? wallet.euro : 'Loading...'}</span>
+                                <button className="btn btn-dropdown" onClick={() => navigate('/settings')}>Settings</button>
+                                <button className="btn btn-dropdown" onClick={() => navigate('/username')}>Update Username</button>
+                                <button className="btn btn-dropdown" onClick={() => navigate('/password')}>Change Password</button>
+                                <button className="btn btn-danger" onClick={logout}>Logout</button>
+                            </div>
+                        )}
                     </div>
-                ) : (
+                )}
+
+                {!user && (
                     <>
                         <button className="btn btn-action" onClick={() => navigate('/login')}>Login</button>
                         <button className="btn btn-action" onClick={() => navigate('/register')}>Register</button>

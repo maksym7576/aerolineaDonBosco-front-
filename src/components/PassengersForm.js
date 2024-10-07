@@ -1,5 +1,7 @@
+// PassengersForm.js
 import React, { useState } from 'react';
 import PassengersService from '../services/PassengersService';
+import '../styles/PassengersForm.css'; // Імпортуємо стилі
 
 const PassengersForm = ({ onPassengerAdded }) => {
     const [capacity, setCapacity] = useState('');
@@ -15,7 +17,10 @@ const PassengersForm = ({ onPassengerAdded }) => {
         }
 
         try {
-            const newPassenger = { capacity: parseInt(capacity, 10), reservedSeats: parseInt(reservedSeats, 10) };
+            const newPassenger = { 
+                capacity: parseInt(capacity, 10), 
+                reservedSeats: parseInt(reservedSeats, 10) 
+            };
             const createdPassenger = await PassengersService.createPassenger(newPassenger);
             onPassengerAdded(createdPassenger); // Викликаємо callback для оновлення
             setCapacity('');
@@ -28,7 +33,7 @@ const PassengersForm = ({ onPassengerAdded }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="passengers-form-container">
             <input 
                 type="number" 
                 placeholder="Capacity" 

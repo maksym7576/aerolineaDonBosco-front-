@@ -1,5 +1,5 @@
-// UpdatePasswordForm.js
 import React, { useState } from 'react';
+import '../styles/UpdatePasswordForm.css'; // Імпортуємо CSS файл
 
 const UpdatePasswordForm = ({ onUpdate }) => {
     const [oldPassword, setOldPassword] = useState('');
@@ -12,26 +12,28 @@ const UpdatePasswordForm = ({ onUpdate }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
+        <form className="update-password-form" onSubmit={handleSubmit}>
+            <div className="form-group">
                 <label>Old Password:</label>
                 <input
+                    className="form-input"
                     type="password"
                     value={oldPassword}
                     onChange={(e) => setOldPassword(e.target.value)}
                     required
                 />
             </div>
-            <div>
+            <div className="form-group">
                 <label>New Password:</label>
                 <input
+                    className="form-input"
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
                 />
             </div>
-            <button type="submit">Update Password</button>
+            <button className="form-button" type="submit">Update Password</button>
         </form>
     );
 };

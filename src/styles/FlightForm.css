@@ -1,0 +1,118 @@
+/* FlightForm.css */
+
+.flight-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f7f7f7;
+}
+
+.flight-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px; /* Максимальна ширина форми */
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap; /* Дозволяє кнопкам переноситися на наступний рядок */
+    margin-bottom: 15px;
+    width: 100%;
+    justify-content: center; /* Центрує кнопки по горизонталі */
+}
+
+.route-button,
+.passenger-button {
+    background-color: #3498db;
+    color: white;
+    padding: 8px; /* Зменшене заповнення для кнопок */
+    margin: 5px; /* Міжкнопковий відступ */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+    font-size: 12px; /* Зменшений шрифт */
+    flex: 1 1 30%; /* Кнопки займуть 30% ширини контейнера */
+    min-width: 90px; /* Мінімальна ширина кнопок */
+}
+
+.route-button:hover,
+.passenger-button:hover {
+    background-color: #2980b9;
+}
+
+.active {
+    background-color: #e74c3c; /* Підсвічування активних кнопок */
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between; /* Розміщення інпутів з боків */
+    width: 100%;
+    margin: 10px 0; /* Відстань між інпутами */
+}
+
+input[type="datetime-local"],
+input[type="number"] {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 48%; /* Ширина інпутів */
+}
+
+.file-input-container {
+    position: relative;
+    display: inline-block;
+}
+
+.file-input {
+    display: none; /* Сховати стандартний інпут */
+}
+
+.file-input-label {
+    background-color: #3498db;
+    color: white;
+    padding: 8px 10px; /* Зменшене заповнення для мітки */
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+    margin: 10px 5px; /* Відстань між кнопками */
+}
+
+.file-input-label:hover {
+    background-color: #2980b9;
+}
+
+.submit-button {
+    background-color: #1abc9c;
+    color: white;
+    padding: 8px 10px; /* Зменшене заповнення для кнопки відправлення */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Ширина кнопки відправлення */
+}
+
+.submit-button:hover {
+    background-color: #16a085;
+}
+
+.submit-button-container {
+    display: flex; /* Дозволяє розміщувати кнопки в один рядок */
+    justify-content: space-between;
+    width: 100%; /* Ширина контейнера */
+    margin-top: 15px; /* Відступ між кнопками та формою */
+}
+
+.submit-button + .file-input-label {
+    margin-left: 10px; /* Відступ між кнопками */
+}

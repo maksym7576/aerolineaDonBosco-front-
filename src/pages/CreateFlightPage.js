@@ -1,3 +1,4 @@
+// CreateFlightPage.js
 import React, { useState, useEffect } from 'react';
 import RoutesService from '../services/RoutesService';
 import PassengersService from '../services/PassengersService';
@@ -5,6 +6,7 @@ import FlightForm from '../components/FlightForm';
 import FlightListAdmin from '../components/FlightListAdmin';
 import PassengersForm from '../components/PassengersForm';
 import RouteForm from '../components/RouteForm';
+import '../styles/CreateFlightPage.css'; // Імпортуємо стилі
 
 const CreateFlightPage = () => {
     const [routes, setRoutes] = useState([]);
@@ -43,6 +45,7 @@ const CreateFlightPage = () => {
 
     return (
         <div>
+        <div className="create-flight-page-container">
             <h2>Add Passenger</h2>
             <PassengersForm onPassengerAdded={handlePassengerAdded} />
 
@@ -50,8 +53,9 @@ const CreateFlightPage = () => {
             <RouteForm onRouteAdded={handleRouteAdded} />
 
             <h1>Create Flight</h1>
-            <FlightForm passengers={passengers} routes={routes} />
-            <FlightListAdmin /> {/* Список рейсів */}
+        </div>
+        <FlightForm passengers={passengers} routes={routes} />
+        <FlightListAdmin /> {/* Список рейсів */}
         </div>
     );
 };

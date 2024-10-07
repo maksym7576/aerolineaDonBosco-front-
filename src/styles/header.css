@@ -1,3 +1,52 @@
+/* Випадаюче меню */
+.menu-dropdown {
+    position: absolute;
+    right: 0;
+    top: 60px; /* Відстань до верхньої частини */
+    background-color: #ffffff; /* Білий фон для меню */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Легка тінь для контрасту */
+    z-index: 1;
+    width: 250px; /* Ширина меню */
+}
+
+/* Стиль для кнопок у меню */
+.btn-dropdown {
+    background-color: #1abc9c; /* Зелений фон для кнопок */
+    color: white; /* Білий текст */
+    border: none; /* Без рамок */
+    text-align: left; /* Вирівнювання тексту вліво */
+    padding: 10px 15px; /* Внутрішні відступи */
+    width: 100%; /* Ширина на всю довжину */
+    cursor: pointer; /* Зміна курсору на вказівник */
+    transition: background-color 0.3s; /* Додано анімацію при наведені */
+    font-weight: bold; /* Збільшена жирність тексту */
+    border-radius: 5px; /* Кутова закругленість */
+    margin-bottom: 5px; /* Відступ між кнопками */
+}
+
+.btn-dropdown:hover {
+    background-color: #16a085; /* Світліший зелений колір при наведені */
+}
+
+/* Вітальне повідомлення */
+.welcome-message {
+    font-size: 16px; /* Зменшений розмір шрифту */
+    margin-bottom: 5px; /* Зменшений відступ */
+    display: block;
+    color: #333; /* Зменшено контрастність тексту */
+}
+
+/* Стиль для балансу */
+.user-money {
+    font-size: 18px; /* Зменшений розмір шрифту */
+    color: #333; /* Зменшено контрастність тексту */
+    font-weight: normal; /* Зменшена вага тексту */
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 5px; /* Зменшений відступ */
+}
+
 /* Основні стилі для header */
 .header {
     display: flex;
@@ -23,11 +72,6 @@
 
 .header-title:hover {
     color: #2980b9;
-}
-
-.header-center {
-    flex: 2;
-    text-align: center;
 }
 
 .header-right {
@@ -92,50 +136,8 @@
     transform: scale(1.05);
 }
 
-/* Випадаюче меню */
+/* Випадаюче меню для імені користувача */
 .user-info-container {
     position: relative;
     display: inline-block;
-}
-
-.user-dropdown {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 40px;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    width: 200px;
-    transition: opacity 0.3s ease;
-}
-
-.user-info-container:hover .user-dropdown {
-    display: block;
-}
-
-/* Вітальне повідомлення */
-.welcome-message {
-    font-size: 18px;
-    margin-bottom: 10px;
-    display: block;
-    color: #27ae60;
-    font-weight: 600;
-}
-
-/* Стиль для балансу */
-.user-money {
-    font-size: 20px;
-    color: #e67e22;
-    font-weight: bold;
-    font-family: 'Roboto', sans-serif;
-    margin-bottom: 10px;
-}
-
-.user-money::before {
-    content: '💰 ';
-    font-size: 22px;
-    color: #e67e22;
 }
