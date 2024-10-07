@@ -8,6 +8,8 @@ import Register from "./components/Register";
 import MyFlightsPage from "./pages/MyFlightsPage";
 import UpdateUsernamePage from "./pages/UpdateUsernamePage";
 import UpdatePasswordPage from "./pages/UpdatePasswordForm";
+import ImportMoneyPage from "./pages/ImportMoneyPage";
+import CreateFlightPage from "./pages/CreateFlightPage";
 
 function App() {
   return (
@@ -54,6 +56,16 @@ function App() {
              <Route path="/password" element={
             <>
             <UpdatePasswordPage />
+            </>
+          } />
+              <Route path="/replenishment" element={
+            <>
+            <ImportMoneyPage />
+            </>
+          } />
+                <Route path="/admin" element={
+            <>
+            <CreateFlightPage />
             </>
           } />
         </Routes>

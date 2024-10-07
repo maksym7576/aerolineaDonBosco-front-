@@ -35,7 +35,7 @@ class ReservationList extends React.Component {
 
     handleCancel = async (reservationId) => {
         try {
-            const result = await ReserveService.cancelReservation(reservationId);
+            await ReserveService.cancelReservation(reservationId);
             this.setState(prevState => ({
                 returnMessage: 'Reservation canceled successfully.',
                 localReservations: prevState.localReservations.filter(res => res.id !== reservationId)
@@ -44,12 +44,16 @@ class ReservationList extends React.Component {
             this.fetchWalletBalance();
             setTimeout(() => this.setState({ returnMessage: '' }), 5000);
         } catch (error) {
-            console.error('Error cancelling reservation:', error);
-            this.setState({ returnMessage: 'Failed to cancel reservation.' });
         }
     }
 
-    createReservation = async (reservationData) => {
+    createReservation = async (flight) => {
+        const reservationData = {
+            reservedSeats: flight.reservedSeats, // Number of seats reserved
+            flight: { id: flight.flight.id }, // Flight ID
+            user: { id: localStorage.getItem('userId') } // User ID
+        };
+
         try {
             const result = await ReserveService.createReservation(reservationData);
             this.setState(prevState => ({
@@ -78,27 +82,32 @@ class ReservationList extends React.Component {
                     {localReservations.length > 0 ? (
                         localReservations.map((reservation) => (
                             <li key={reservation.id} className="reservation-card">
-                               <div className="reservation-image">
-                                {reservation.flight.airplaneImage ? (
-                                    <img
-                                        src={reservation.flight.airplaneImage}
-                                        alt={`Flight from ${reservation.flight.origin.city} to ${reservation.flight.destination.city}`}
-                                        className="airplane-image"
-                                    />
-                                  ) : (
-                                    <div className="no-image">No Image</div>
-                                 )}
+                                <div className="reservation-image">
+                                    {reservation.flight.images && reservation.flight.images.length > 0 ? (
+                                        <img
+                                            src={`data:image/jpeg;base64,${reservation.flight.images[0].imageData}`}
+                                            alt={`Flight from ${reservation.flight.origin.city} to ${reservation.flight.destination.city}`}
+                                            className="airplane-image"
+                                        />
+                                    ) : (
+                                        <div className="no-image">No Image</div>
+                                    )}
                                 </div>
                                 <div className="reservation-details">
                                     <p><strong>Flight:</strong> {reservation.flight.origin.city} to {reservation.flight.destination.city}</p>
                                     <p><strong>Reserved Seats:</strong> {reservation.reservedSeats}</p>
                                     <p><strong>Price per Seat:</strong> {reservation.flight.costEuro} EUR</p>
                                     <p><strong>Total Cost:</strong> {reservation.flight.costEuro * reservation.reservedSeats} EUR</p>
-                                    <p><strong>Date:</strong> {new Date(reservation.flight.date).toLocaleDateString()}</p>
+                                    <p><strong>Date:</strong> {new Date(reservation.flight.departureTime).toLocaleDateString()}</p>
                                 </div>
-                                <button className="cancel-btn" onClick={() => this.handleCancel(reservation.id)}>
-                                    Cancel
-                                </button>
+                                {new Date(reservation.flight.departureTime) >= new Date() && (
+                                    <button
+                                        className="cancel-btn"
+                                        onClick={() => this.handleCancel(reservation.id)}
+                                    >
+                                        Cancel
+                                    </button>
+                                )}
                             </li>
                         ))
                     ) : (

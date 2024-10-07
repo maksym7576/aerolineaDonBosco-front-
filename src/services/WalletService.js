@@ -15,6 +15,19 @@ class WalletService {
             throw error; // Пробросити помилку
         }
     }
+
+    // Додати гроші до гаманця
+    async addMoneyToWallet(userId, amount) {
+        try {
+            const response = await axios.put(
+                `${this.baseURL}/user/addMoney/${userId}?money=${amount}`
+            );
+            return response.data; // Повертає дані після успішного додавання грошей
+        } catch (error) {
+            console.error('Error adding money to wallet:', error);
+            throw error; // Пробросити помилку
+        }
+    }
 }
 
 export default new WalletService();

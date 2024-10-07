@@ -23,7 +23,7 @@ class AuthService {
             const token = response.data.token;
 
             if (token) {
-                localStorage.setItem('token', token); // Зберігаємо токен
+                localStorage.setItem('token', token);
                 return token;
             }
         } catch (error) {

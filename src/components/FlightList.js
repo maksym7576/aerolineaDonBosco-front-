@@ -1,17 +1,19 @@
 import React from 'react';
 import ReserveService from '../services/ReserveService';
 import WalletService from '../services/WalletService';
+import FlightImageService from '../services/FlightImageService';
 import '../styles/FlightList.css';
 
 class FlightList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isInputVisible: false,
-            inputValue: '',
+            inputVisibility: {},
+            inputValues: {},
             error: '',
             userId: null,
-            walletBalance: null
+            walletBalance: null,
+            flightImages: {}
         };
     }
 
@@ -22,6 +24,7 @@ class FlightList extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.flights !== this.props.flights) {
             console.log('Received flights:', this.props.flights);
+            this.fetchFlightImages();
         }
         if (prevState.userId !== this.state.userId && this.state.userId) {
             this.fetchWalletBalance();
@@ -43,7 +46,7 @@ class FlightList extends React.Component {
                 this.setState({ error: 'User not authenticated. Please log in again.' });
             }
         }
-    }
+    };
 
     fetchWalletBalance = async () => {
         try {
@@ -52,50 +55,95 @@ class FlightList extends React.Component {
         } catch (error) {
             this.setState({ error: 'Failed to fetch wallet balance' });
         }
-    }
+    };
 
-    toggleInput = () => {
-        this.setState(prevState => ({ isInputVisible: !prevState.isInputVisible, inputValue: '', error: '' }));
-    }
+    fetchFlightImages = async () => {
+        const { flights } = this.props;
+        for (const flight of flights) {
+            try {
+                const image = await FlightImageService.getImageByFlightId(flight.id);
+                this.setState((prevState) => ({
+                    flightImages: {
+                        ...prevState.flightImages,
+                        [flight.id]: image
+                    }
+                }));
+            } catch (error) {
+                console.error(`Error fetching image for flight ${flight.id}:`, error);
+            }
+        }
+    };
 
-    handleInputChange = (e) => {
+    toggleInput = (flightId) => {
+        this.setState((prevState) => {
+            const isVisible = !prevState.inputVisibility[flightId];
+            return {
+                inputVisibility: {
+                    ...prevState.inputVisibility,
+                    [flightId]: isVisible,
+                },
+                inputValues: {
+                    ...prevState.inputValues,
+                    [flightId]: '',
+                },
+                error: '',
+            };
+        });
+    };
+
+    handleInputChange = (flightId, e) => {
         const value = e.target.value;
         if (value === '' || Number(value) >= 1) {
-            this.setState({ inputValue: value, error: '' });
+            this.setState((prevState) => ({
+                inputValues: {
+                    ...prevState.inputValues,
+                    [flightId]: value,
+                },
+                error: '',
+            }));
         } else {
             this.setState({ error: 'Value must be greater than 0' });
         }
-    }
+    };
 
     handleReserve = async (flight) => {
+        const flightId = flight.id;
+        const reservedSeats = Number(this.state.inputValues[flightId]);
+
         if (!this.state.userId) {
             this.setState({ error: 'User not authenticated. Please log in again.' });
             return;
         }
 
+        if (reservedSeats < 1) {
+            this.setState({ error: "You can't reserve less than 1 seat" });
+            return;
+        }
+
         const reservationData = {
-            reservedSeats: Number(this.state.inputValue),
-            flight: { id: flight.id },
+            reservedSeats,
+            flight: { id: flightId },
             user: { id: this.state.userId },
         };
 
         try {
-            const response = await ReserveService.createReservation(reservationData); // викликаємо без токена
+            const response = await ReserveService.createReservation(reservationData);
             if (response && response.id) {
                 alert('Reservation successful!');
                 await this.fetchWalletBalance();
+                this.toggleInput(flightId); // Hide the input after reservation
             } else {
                 this.setState({ error: 'Unexpected response from server' });
             }
         } catch (error) {
-            console.error('Error while reserving:', error); // Додано для дебагу
+            console.error('Error while reserving:', error);
             this.setState({ error: 'Failed to make reservation: ' + (error.response?.data?.message || error.message) });
         }
-    }
+    };
 
     render() {
         const { flights } = this.props;
-        const { isInputVisible, inputValue, error, userId } = this.state;
+        const { inputVisibility, inputValues, error, userId, flightImages } = this.state;
 
         return (
             <div className="flight-list">
@@ -104,9 +152,9 @@ class FlightList extends React.Component {
                     flights.map((flight) => (
                         <div key={flight.id} className="flight-card">
                             <div className="flight-photo-container">
-                                {flight.url ? (
+                                {flight.images && flight.images.length > 0 ? (
                                     <img
-                                        src={flight.url}
+                                        src={`data:image/jpeg;base64,${flight.images[0].imageData}`}
                                         alt={`Flight from ${flight.origin.city} to ${flight.destination.city}`}
                                         className="flight-photo"
                                     />
@@ -116,49 +164,35 @@ class FlightList extends React.Component {
                             </div>
                             <div className="flight-details">
                                 <h3 className="flight-route">
-                                    {flight.origin.city}, {flight.origin.country} to {flight.destination.city}, {flight.destination.country}
+                                    {flight.origin.country || 'Unknown Country'} {flight.origin.city || 'Unknown City'} to{' '}
+                                    {flight.destination.country || 'Unknown Country'} {flight.destination.city || 'Unknown City'}
                                 </h3>
                                 <p><strong>Departure Time:</strong> {flight.departureTime ? new Date(flight.departureTime).toLocaleString() : 'N/A'}</p>
-                                <p><strong>Passengers Capacity:</strong> {flight.passengers.capacity}</p>
-                                <p><strong>Reserved Seats:</strong> {flight.passengers.reservedSeats}</p>
-
-                                {/* Display availability based on availableSeat */}
+                                <p><strong>Passengers Capacity:</strong> {flight.passengers?.capacity || 'N/A'}</p>
+                                <p><strong>Reserved Seats:</strong> {flight.passengers?.reservedSeats || 'N/A'}</p>
                                 {flight.availableSeat ? (
                                     <p className="available-seats">Seats available</p>
                                 ) : (
                                     <p className="no-seats">Fully booked</p>
                                 )}
-                                 <p><strong>Cost:</strong> {flight.costEuro} EUR</p>
-
-                                {/* Only show the reserve option if seats are available */}
-                                {flight.availableSeat && !isInputVisible ? (
-                                    <button onClick={this.toggleInput}>
-                                        Buy
-                                    </button>
+                                <p><strong>Cost:</strong> {flight.costEuro} EUR</p>
+                                {flight.availableSeat && !inputVisibility[flight.id] ? (
+                                    <button onClick={() => this.toggleInput(flight.id)}>Buy</button>
                                 ) : (
-                                    isInputVisible && flight.availableSeat && (
+                                    inputVisibility[flight.id] && flight.availableSeat && (
                                         <div>
                                             <input
                                                 type="number"
-                                                value={inputValue}
-                                                onChange={this.handleInputChange}
+                                                value={inputValues[flight.id] || ''}
+                                                onChange={(e) => this.handleInputChange(flight.id, e)}
                                                 placeholder="Number of Passengers"
                                                 min="1"
                                             />
                                             {error && <p style={{ color: 'red' }}>{error}</p>}
-                                            <button
-                                                onClick={() => {
-                                                    if (inputValue && Number(inputValue) >= 1) {
-                                                        this.handleReserve(flight);
-                                                    } else {
-                                                        this.setState({ error: "You can't input less than 1 person" });
-                                                    }
-                                                }}
-                                                disabled={!inputValue || Number(inputValue) < 1 || !userId}
-                                            >
+                                            <button onClick={() => this.handleReserve(flight)}>
                                                 Buy
                                             </button>
-                                            <button className="cancel-btn" onClick={this.toggleInput}>
+                                            <button className="cancel-btn" onClick={() => this.toggleInput(flight.id)}>
                                                 Cancel
                                             </button>
                                         </div>

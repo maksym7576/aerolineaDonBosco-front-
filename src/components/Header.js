@@ -57,6 +57,8 @@ const Header = () => {
                     <div className="user-info-container">
                         <span className="user-info" tabIndex={0}>{user.username}</span>
                         <button className="btn btn-flights" onClick={() => navigate('/reservation')}>My Flights</button>
+                        <button className="btn btn-flights" onClick={() => navigate('/replenishment')}>Add money</button>
+                        <button className="btn btn-flights" onClick={() => navigate('/admin')}>Add money</button>
                         <div className="user-dropdown">
                             <span className="welcome-message">Welcome, {user.username}!</span>
                             <span className="user-money">Balance: {wallet ? wallet.euro : 'Loading...'}</span>
