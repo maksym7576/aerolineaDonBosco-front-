@@ -169,7 +169,7 @@ class FlightList extends React.Component {
                                 </h3>
                                 <p><strong>Departure Time:</strong> {flight.departureTime ? new Date(flight.departureTime).toLocaleString() : 'N/A'}</p>
                                 <p><strong>Passengers Capacity:</strong> {flight.passengers?.capacity || 'N/A'}</p>
-                                <p><strong>Reserved Seats:</strong> {flight.passengers?.reservedSeats || 'N/A'}</p>
+                                <p><strong>Reserved Seats:</strong> {flight.passengers?.reservedSeats || '0'}</p>
                                 {flight.availableSeat ? (
                                     <p className="available-seats">Seats available</p>
                                 ) : (

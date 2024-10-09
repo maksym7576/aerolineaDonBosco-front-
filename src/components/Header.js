@@ -74,7 +74,8 @@ const Header = () => {
                             <div className="menu-dropdown">
                                 <span className="welcome-message">Welcome, {user.username}!</span>
                                 <span className="user-money">Balance: {wallet ? wallet.euro : 'Loading...'}</span>
-                                <button className="btn btn-dropdown" onClick={() => navigate('/settings')}>Settings</button>
+                                <button className="btn btn-dropdown" onClick={() => navigate('/replenishment')}>Add money</button>
+                                {/* <button className="btn btn-dropdown" onClick={() => navigate('/settings')}>Settings</button> */}
                                 <button className="btn btn-dropdown" onClick={() => navigate('/username')}>Update Username</button>
                                 <button className="btn btn-dropdown" onClick={() => navigate('/password')}>Change Password</button>
                                 <button className="btn btn-danger" onClick={logout}>Logout</button>
