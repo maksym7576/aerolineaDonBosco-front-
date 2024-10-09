@@ -6,7 +6,7 @@ import FlightForm from '../components/FlightForm';
 import FlightListAdmin from '../components/FlightListAdmin';
 import PassengersForm from '../components/PassengersForm';
 import RouteForm from '../components/RouteForm';
-import '../styles/CreateFlightPage.css'; // Імпортуємо стилі
+import '../styles/CreateFlightPage.css'; 
 
 const CreateFlightPage = () => {
     const [routes, setRoutes] = useState([]);
@@ -55,7 +55,7 @@ const CreateFlightPage = () => {
             <h1>Create Flight</h1>
         </div>
         <FlightForm passengers={passengers} routes={routes} />
-        <FlightListAdmin /> {/* Список рейсів */}
+        <FlightListAdmin /> 
         </div>
     );
 };

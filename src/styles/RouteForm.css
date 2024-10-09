@@ -1,5 +1,3 @@
-/* RouteForm.css */
-
 .route-form-container {
     display: flex;
     flex-direction: column;
@@ -9,17 +7,17 @@
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px; /* Максимальна ширина форми */
-    margin: 20px auto; /* Відступ зверху та знизу для центрування */
+    max-width: 400px;
+    margin: 20px auto;
 }
 
 .route-form-container input {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
-    margin-bottom: 10px; /* Відступ між інпутами */
-    width: 100%; /* Ширина інпутів */
-    font-size: 14px; /* Розмір шрифту для інпутів */
+    margin-bottom: 10px;
+    width: 100%;
+    font-size: 14px;
 }
 
 .route-form-container button {
@@ -30,8 +28,8 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 100%; /* Ширина кнопки */
-    font-size: 14px; /* Розмір шрифту для кнопки */
+    width: 100%;
+    font-size: 14px;
 }
 
 .route-form-container button:hover {
@@ -39,6 +37,6 @@
 }
 
 .route-form-container p {
-    color: red; /* Колір повідомлення про помилку */
-    margin: 10px 0; /* Відступ для повідомлення про помилку */
+    color: red;
+    margin: 10px 0;
 }

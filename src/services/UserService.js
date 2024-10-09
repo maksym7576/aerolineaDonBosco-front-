@@ -4,7 +4,6 @@ class UserService {
     constructor() {
         this.baseURL = 'http://localhost:8080/api';
 
-        // Створити екземпляр axios з налаштуваннями
         this.api = axios.create({
             baseURL: this.baseURL,
             headers: {
@@ -12,7 +11,7 @@ class UserService {
             },
         });
 
-        // Додати обробник для автоматичного додавання токена
+
         this.api.interceptors.request.use(config => {
             const token = localStorage.getItem('token');
             if (token) {
@@ -22,7 +21,6 @@ class UserService {
         });
     }
 
-    // Отримання профілю користувача
     async getUserProfile() {
         try {
             const response = await this.api.get('/user');
@@ -39,7 +37,6 @@ class UserService {
         }
     }
 
-    // Створення гаманця після реєстрації
     async createWalletForUser(userId) {
         try {
             const response = await this.api.post(`/wallet/create/${userId}`, null);
@@ -55,7 +52,7 @@ class UserService {
             const response = await this.api.put(`/user/updateUsername/${userId}`, null, {
                 params: { username }
             });
-            return response.data; // Повертає оновленого користувача
+            return response.data; 
         } catch (error) {
             console.error('Error updating username:', error);
             throw error;
@@ -67,7 +64,7 @@ class UserService {
             const response = await this.api.put(`/user/updatePassword/${userId}`, null, {
                 params: { oldPassword, password: newPassword },
             });
-            return response.data; // Повертає оновленого користувача
+            return response.data; 
         } catch (error) {
             console.error('Error updating password:', error);
             throw error;

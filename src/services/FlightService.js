@@ -5,7 +5,6 @@ class FlightService {
         this.baseURL = 'http://localhost:8080/api/flight';
         this.token = localStorage.getItem('token');
 
-        // Створити екземпляр axios з налаштуваннями
         this.api = axios.create({
             baseURL: this.baseURL,
             headers: {
@@ -14,22 +13,19 @@ class FlightService {
             }
         });
 
-        // Обробка відповіді з серверу
         this.api.interceptors.response.use(
             response => response,
             async error => {
                 if (error.response && error.response.status === 401) {
                     console.error('Unauthorized: Token might be expired or invalid. Please log in again.');
-                    // Логіка для видалення токена та перенаправлення на сторінку логіну
                     localStorage.removeItem('token');
-                    window.location.href = '/login'; // Перенаправити на сторінку логіну
+                    window.location.href = '/login'; 
                 }
                 return Promise.reject(error);
             }
         );
     }
 
-    // Метод для отримання нового токена при необхідності
     async refreshToken() {
         try {
             const refreshToken = localStorage.getItem('refreshToken');
@@ -39,17 +35,14 @@ class FlightService {
             const newToken = response.data.token;
             localStorage.setItem('token', newToken);
 
-            // Оновити заголовки з новим токеном
             this.api.defaults.headers['Authorization'] = `Bearer ${newToken}`;
         } catch (error) {
             console.error('Error refreshing token:', error);
-            // Логіка для перенаправлення на сторінку логіну
             localStorage.removeItem('token');
             window.location.href = '/login';
         }
     }
 
-    // Метод для отримання всіх рейсів
     async getAllFlights() {
         try {
             const response = await this.api.get('/get');

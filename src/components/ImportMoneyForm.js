@@ -8,24 +8,21 @@ const ImportMoneyForm = ({ wallet }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Перевірка на валідність суми
         if (amount <= 0) {
             setError('Please enter a valid amount.');
             return;
         }
 
         try {
-            // Отримання userId з localStorage
             const userId = localStorage.getItem('userId');
-            // Виконання запиту на додавання грошей до гаманця
             const response = await WalletService.addMoneyToWallet(userId, amount);
 
             console.log('Money added successfully:', response);
-            setAmount(''); // Очистка поля після успішного запиту
-            setError(''); // Очистка помилки (якщо була)
+            setAmount(''); 
+            setError(''); 
         } catch (err) {
             setError('Failed to add money to wallet.');
-            console.error('Error response:', err.response); // Логування помилки
+            console.error('Error response:', err.response);
         }
     };
 

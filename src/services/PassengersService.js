@@ -2,12 +2,10 @@ import axios from 'axios';
 
 class PassengersService {
     constructor() {
-        this.baseURL = 'http://localhost:8080/api/v1'; // Основний URL для API пасажирів
+        this.baseURL = 'http://localhost:8080/api/v1'; 
 
-        // Отримати токен з localStorage
         const token = localStorage.getItem('token');
 
-        // Створити екземпляр axios з налаштуваннями
         this.api = axios.create({
             baseURL: this.baseURL,
             headers: {
@@ -17,7 +15,6 @@ class PassengersService {
         });
     }
 
-    // Отримати всіх пасажирів
     async getAllPassengers() {
         try {
             const response = await this.api.get('/passengers');
@@ -28,7 +25,6 @@ class PassengersService {
         }
     }
 
-    // Додати нового пасажира
     async createPassenger(passenger) {
         try {
             const response = await this.api.post('/new/passengers', passenger);

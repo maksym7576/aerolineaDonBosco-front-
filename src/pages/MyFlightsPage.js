@@ -38,7 +38,7 @@ const MyFlightsPage = () => {
 
   return (
     <div>
-      <ReservationList reservations={reservations} /> {/* Використання ReservationList */}
+      <ReservationList reservations={reservations} /> 
     </div>
   );
 };

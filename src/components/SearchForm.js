@@ -17,7 +17,6 @@ const SearchForm = ({ onSearch }) => {
 
   const handleCountryBlur = (name) => {
     if (searchParams[name]) {
-      // Якщо введено країну, переключити на відповідне місто
       if (name === 'originCountry') {
         document.getElementById('originCity').focus();
       } else if (name === 'destinationCountry') {
@@ -35,7 +34,6 @@ const SearchForm = ({ onSearch }) => {
     <form className="search-form" onSubmit={handleSubmit}>
       <h2 className="form-title">Search Flights</h2>
       <div className="form-container">
-        {/* Введення країн */}
         <div className="form-group">
           <label className="form-subtitle">Origin Country</label>
           <input
@@ -91,7 +89,6 @@ const SearchForm = ({ onSearch }) => {
         </div>
       </div>
 
-      {/* Введення дати */}
       <div className="form-group">
         <label htmlFor="localDate" className="form-subtitle">Date</label>
         <input
@@ -104,7 +101,6 @@ const SearchForm = ({ onSearch }) => {
         />
       </div>
 
-      {/* Кнопка для подачі */}
       <button type="submit" className="form-button">
         Search
       </button>

@@ -1,7 +1,6 @@
-// PassengersForm.js
 import React, { useState } from 'react';
 import PassengersService from '../services/PassengersService';
-import '../styles/PassengersForm.css'; // Імпортуємо стилі
+import '../styles/PassengersForm.css';
 
 const PassengersForm = ({ onPassengerAdded }) => {
     const [capacity, setCapacity] = useState('');
@@ -22,7 +21,7 @@ const PassengersForm = ({ onPassengerAdded }) => {
                 reservedSeats: parseInt(reservedSeats, 10) 
             };
             const createdPassenger = await PassengersService.createPassenger(newPassenger);
-            onPassengerAdded(createdPassenger); // Викликаємо callback для оновлення
+            onPassengerAdded(createdPassenger); 
             setCapacity('');
             setReservedSeats('');
             setError('');

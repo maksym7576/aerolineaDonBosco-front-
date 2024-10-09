@@ -1,7 +1,7 @@
 // RouteForm.js
 import React, { useState } from 'react';
 import RoutesService from '../services/RoutesService';
-import '../styles/RouteForm.css'; // Імпортуємо стилі
+import '../styles/RouteForm.css'; 
 
 const RouteForm = ({ onRouteAdded }) => {
     const [country, setCountry] = useState('');
@@ -19,7 +19,7 @@ const RouteForm = ({ onRouteAdded }) => {
         try {
             const newRoute = { country, city };
             const createdRoute = await RoutesService.createRoute(newRoute);
-            onRouteAdded(createdRoute); // Викликаємо callback для оновлення
+            onRouteAdded(createdRoute); 
             setCountry('');
             setCity('');
             setError('');

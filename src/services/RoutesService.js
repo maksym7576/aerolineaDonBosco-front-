@@ -2,12 +2,10 @@ import axios from 'axios';
 
 class RoutesService {
     constructor() {
-        this.baseURL = 'http://localhost:8080/api/v1'; // Основний URL для API маршрутів
+        this.baseURL = 'http://localhost:8080/api/v1'; 
 
-        // Отримати токен з localStorage
         const token = localStorage.getItem('token');
 
-        // Створити екземпляр axios з налаштуваннями
         this.api = axios.create({
             baseURL: this.baseURL,
             headers: {
@@ -17,7 +15,6 @@ class RoutesService {
         });
     }
 
-    // Отримати всі маршрути
     async getAllRoutes() {
         try {
             const response = await this.api.get('/routes');
@@ -28,7 +25,6 @@ class RoutesService {
         }
     }
 
-    // Додати новий маршрут
     async createRoute(route) {
         try {
             const response = await this.api.post('/new/routes', route);

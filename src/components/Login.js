@@ -20,7 +20,6 @@ function Login() {
             const walletData = await WalletService.getWalletByUserId(userProfile.id);
             localStorage.setItem('wallet', JSON.stringify(walletData));
 
-            // Відправляємо подію про успішний вхід
             window.dispatchEvent(new Event('userLoggedIn'));
 
             navigate('/');

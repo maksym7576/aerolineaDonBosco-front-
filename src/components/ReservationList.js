@@ -1,7 +1,7 @@
 import React from 'react';
 import ReserveService from '../services/ReserveService';
 import WalletService from '../services/WalletService';
-import '../styles/ReservationList.css'; // Import CSS file for styling
+import '../styles/ReservationList.css'; 
 
 class ReservationList extends React.Component {
     constructor(props) {
@@ -49,9 +49,9 @@ class ReservationList extends React.Component {
 
     createReservation = async (flight) => {
         const reservationData = {
-            reservedSeats: flight.reservedSeats, // Number of seats reserved
-            flight: { id: flight.flight.id }, // Flight ID
-            user: { id: localStorage.getItem('userId') } // User ID
+            reservedSeats: flight.reservedSeats, 
+            flight: { id: flight.flight.id }, 
+            user: { id: localStorage.getItem('userId') } 
         };
 
         try {

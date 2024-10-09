@@ -1,92 +1,92 @@
-/* Основні стилі форми реєстрації */
+
 .register-form {
-    background-color: #ffffff; /* Білий фон */
-    padding: 25px; /* Внутрішні відступи */
-    border-radius: 10px; /* Закруглені кути */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Тінь */
-    max-width: 400px; /* Максимальна ширина */
-    margin: 30px auto 0; /* Відступи зверху та авто з боків */
-    display: flex; /* Використовуємо флекс для вирівнювання */
-    flex-direction: column; /* Вертикальне розташування елементів */
-    align-items: center; /* Центрування вмісту */
-    gap: 12px; /* Відстань між елементами */
+    background-color: #ffffff; 
+    padding: 25px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    max-width: 400px;
+    margin: 30px auto 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 12px; 
 }
 
 .register-form-title {
-    font-size: 24px; /* Розмір шрифту */
-    color: #2c3e50; /* Колір тексту */
-    font-weight: 700; /* Жирність тексту */
-    margin-bottom: 15px; /* Відступ знизу */
-    text-align: center; /* Центрування тексту */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Тінь тексту */
+    font-size: 24px; 
+    color: #2c3e50; 
+    font-weight: 700; 
+    margin-bottom: 15px; 
+    text-align: center; 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .register-form-group {
-    width: 100%; /* Забезпечуємо повну ширину групи */
-    margin-bottom: 15px; /* Відступ знизу */
-    display: flex; /* Використовуємо флекс для вирівнювання */
-    flex-direction: column; /* Вертикальне розташування */
-    align-items: center; /* Центрування вмісту групи */
+    width: 100%; 
+    margin-bottom: 15px;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
 }
 
 .register-form-subtitle {
-    font-size: 16px; /* Розмір шрифту для підпису */
-    color: #34495e; /* Колір тексту */
-    margin: 10px 0 5px; /* Відступи */
-    font-weight: 600; /* Жирність тексту */
-    align-self: flex-start; /* Вирівнювання підпису по лівому краю */
+    font-size: 16px; 
+    color: #34495e;
+    margin: 10px 0 5px; 
+    font-weight: 600; 
+    align-self: flex-start; 
 }
 
 .register-form-input {
-    width: 100%; /* Повна ширина */
-    padding: 10px; /* Внутрішні відступи */
-    border-radius: 6px; /* Закруглені кути */
-    border: 1px solid #bdc3c7; /* Рамка */
-    font-size: 14px; /* Розмір шрифту */
-    transition: all 0.3s ease; /* Анімація при взаємодії */
-    background-color: #f8f9fa; /* Світло-сірий фон */
+    width: 100%;
+    padding: 10px; 
+    border-radius: 6px; 
+    border: 1px solid #bdc3c7; 
+    font-size: 14px; 
+    transition: all 0.3s ease; 
+    background-color: #f8f9fa; 
 }
 
 .register-form-input:focus {
-    border-color: #3498db; /* Колір рамки при фокусі */
-    box-shadow: 0 0 6px rgba(52, 152, 219, 0.4); /* Тінь при фокусі */
-    outline: none; /* Без обведення */
-    background-color: #ffffff; /* Білий фон при фокусі */
+    border-color: #3498db;
+    box-shadow: 0 0 6px rgba(52, 152, 219, 0.4);
+    outline: none; 
+    background-color: #ffffff; 
 }
 
 .register-form-input::placeholder {
-    color: #95a5a6; /* Колір тексту підказки */
+    color: #95a5a6;
 }
 
 .register-form-button {
-    width: 100%; /* Повна ширина */
-    padding: 12px; /* Внутрішні відступи */
-    margin-top: 15px; /* Відступ зверху */
-    background-color: #3498db; /* Синій фон */
-    color: white; /* Білий текст */
-    border: none; /* Без рамки */
-    border-radius: 6px; /* Закруглені кути */
-    font-size: 16px; /* Розмір шрифту */
-    font-weight: 600; /* Жирність тексту */
-    cursor: pointer; /* Курсор при наведенні */
-    transition: all 0.3s ease; /* Анімація при взаємодії */
-    text-transform: uppercase; /* Великі літери */
-    letter-spacing: 1px; /* Відстань між літерами */
+    width: 100%;
+    padding: 12px; 
+    margin-top: 15px;
+    background-color: #3498db;
+    color: white; 
+    border: none; 
+    border-radius: 6px; 
+    font-size: 16px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    text-transform: uppercase;
+    letter-spacing: 1px; 
 }
 
 .register-form-button:hover {
-    background-color: #2980b9; /* Темніший фон при наведенні */
-    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.3); /* Тінь при наведенні */
+    background-color: #2980b9;
+    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.3); 
 }
 
 .register-form-button:active {
-    background-color: #2472a4; /* Темніший фон при натисканні */
-    transform: translateY(1px); /* Зміщення при натисканні */
+    background-color: #2472a4; 
+    transform: translateY(1px); 
 }
 
 .register-form-error {
-    color: #e74c3c; /* Червоний колір для помилок */
-    font-size: 14px; /* Розмір шрифту для помилок */
-    margin-top: 10px; /* Відступ зверху */
-    text-align: center; /* Центрування тексту */
+    color: #e74c3c; 
+    font-size: 14px; 
+    margin-top: 10px;
+    text-align: center;
 }

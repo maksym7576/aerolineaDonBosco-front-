@@ -1,4 +1,4 @@
-/* Основні стилі форми логіну */
+
 .login-search-form {
     background-color: #ffffff;
     padding: 25px;
@@ -8,13 +8,13 @@
     margin: 30px auto 0;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Центрування вмісту форми */
+    align-items: center; 
     gap: 12px;
 }
 
 .login-form-title {
     font-size: 24px;
-    color: #2c3e50;
+    color: #294868;
     font-weight: 700;
     margin-bottom: 15px;
     text-align: center;
@@ -22,11 +22,11 @@
 }
 
 .login-form-group {
-    width: 100%; /* Забезпечуємо повну ширину групи */
+    width: 100%; 
     margin-bottom: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Центрування вмісту групи */
+    align-items: center; 
 }
 
 .login-form-subtitle {
@@ -34,7 +34,7 @@
     color: #34495e;
     margin: 10px 0 5px;
     font-weight: 600;
-    align-self: flex-start; /* Вирівнювання підпису по лівому краю */
+    align-self: flex-start; 
 }
 
 .login-form-input {

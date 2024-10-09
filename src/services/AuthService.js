@@ -5,7 +5,6 @@ class AuthService {
         this.baseURL = 'http://localhost:8080/api/auth';
     }
 
-    // Реєстрація користувача
     async register(userData) {
         try {
             const response = await axios.post(`${this.baseURL}/register`, userData);
@@ -16,7 +15,6 @@ class AuthService {
         }
     }
 
-    // Логін користувача
     async login(credentials) {
         try {
             const response = await axios.post(`${this.baseURL}/login`, credentials);
@@ -32,7 +30,6 @@ class AuthService {
         }
     }
 
-    // Отримання даних профілю користувача
     async getUserProfile() {
         try {
             const token = localStorage.getItem('token');

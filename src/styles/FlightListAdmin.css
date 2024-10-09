@@ -1,41 +1,37 @@
-/* Основні стилі для списку рейсів */
+
 .flight-list-admin .flight-list {
     padding: 20px;
     background-color: #f7f7f7;
     color: #333;
 }
 
-/* Сітка для карток рейсів */
 .flight-list-admin .flights-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Два об'єкти на рядок */
-    gap: 20px; /* Відстань між картками */
-    justify-items: center; /* Центрування карток по горизонталі */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 20px; 
+    justify-items: center;
 }
 
-/* Стиль для картки рейсу */
 .flight-list-admin .flight-card {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 10px; /* Відступи між картками */
-    padding: 10px; /* Внутрішні відступи */
+    margin: 10px; 
+    padding: 10px;
     transition: transform 0.2s;
     display: flex;
-    flex-direction: column; /* Вирівнювання елементів в колонку */
-    width: 100%; /* Картка займає 100% доступного простору */
-    max-width: 350px; /* Максимальна ширина картки */
+    flex-direction: column;
+    width: 100%; 
+    max-width: 350px;
 }
 
-/* Ефект наведенні на картку рейсу */
 .flight-list-admin .flight-card:hover {
     transform: scale(1.02);
 }
 
-/* Стилі для фотографії рейсу */
 .flight-list-admin .flight-photo-container {
     width: 100%;
-    height: 200px; /* Висота контейнера для фото */
+    height: 200px;
     overflow: hidden;
     border-radius: 8px;
     display: flex;
@@ -43,61 +39,54 @@
     align-items: center;
 }
 
-/* Фотографія рейсу */
 .flight-list-admin .flight-photo {
-    width: 100%; /* Ширина фотографії 100% */
-    height: 100%; /* Висота фотографії 100% */
-    object-fit: cover; /* Збереження пропорцій зображення */
+    width: 100%; 
+    height: 100%;
+    object-fit: cover; 
 }
 
-/* Стиль для тексту маршруту рейсу */
 .flight-list-admin .flight-route {
-    font-size: 20px; /* Збільшено шрифт */
+    font-size: 20px; 
     margin: 10px 0;
 }
 
-/* Повідомлення про відсутність рейсів */
 .flight-list-admin .no-image {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px; /* Збільшено шрифт */
+    font-size: 18px; 
     color: #7f8c8d;
     background-color: #ecf0f1;
     border-radius: 8px;
 }
 
-/* Стиль для повідомлень про помилки */
 .flight-list-admin .error-message {
     color: red;
     font-weight: bold;
 }
 
-/* Стиль для кнопок */
 .flight-list-admin button {
     padding: 10px 15px;
-    margin-top: auto; /* Переміщення кнопок до низу картки */
+    margin-top: auto; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-/* Стиль для кнопки видалення */
 .flight-list-admin button:hover {
-    background-color: #e74c3c; /* Червоний для видалення */
+    background-color: #e74c3c;
     color: white;
 }
 
-/* Додати стилі для мобільних пристроїв */
 @media (max-width: 768px) {
     .flight-list-admin .flights-grid {
-        grid-template-columns: 1fr; /* Один об'єкт на рядок на малих екранах */
+        grid-template-columns: 1fr; 
     }
 
     .flight-list-admin .flight-card {
-        width: 100%; /* Ширина картки 100% на малих екранах */
+        width: 100%; 
     }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/UpdatePasswordForm.css'; // Імпортуємо CSS файл
+import '../styles/UpdatePasswordForm.css'; 
 
 const UpdatePasswordForm = ({ onUpdate }) => {
     const [oldPassword, setOldPassword] = useState('');
@@ -8,7 +8,7 @@ const UpdatePasswordForm = ({ onUpdate }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onUpdate(userId, oldPassword, newPassword); // Викликаємо функцію оновлення
+        onUpdate(userId, oldPassword, newPassword); 
     };
 
     return (

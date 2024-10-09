@@ -5,7 +5,6 @@ class SearchService {
         this.baseURL = 'http://localhost:8080/api/flight';
     }
 
-    // Пошук рейсів
     async searchFlights(searchParams) {
         try {
             const response = await axios.get(`${this.baseURL}/search`, {

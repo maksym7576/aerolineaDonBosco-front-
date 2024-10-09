@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/UpdateUsernameForm.css'; // Імпортуємо CSS файл
+import '../styles/UpdateUsernameForm.css'; 
 
 const UpdateUsernameForm = ({ onUpdate }) => {
     const [username, setUsername] = useState('');
@@ -7,7 +7,7 @@ const UpdateUsernameForm = ({ onUpdate }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onUpdate(userId, username); // Викликаємо функцію оновлення
+        onUpdate(userId, username); 
     };
 
     return (

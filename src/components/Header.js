@@ -7,7 +7,7 @@ const Header = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [wallet, setWallet] = useState(null);
-    const [menuOpen, setMenuOpen] = useState(false); // Стан для управління відкриттям меню
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const userRole = user ? user.role : null; 
     console.log(userRole);

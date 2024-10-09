@@ -1,14 +1,12 @@
-/* Base Font Settings */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); /* Importing Roboto font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 body {
-    font-family: 'Roboto', sans-serif; /* Applying Roboto font to the body */
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f2f2f2; /* Light gray background for the page */
+    background-color: #f2f2f2;
 }
 
-/* Reservation List Styles */
 .reservation-list {
     max-width: 1200px;
     margin: 0 auto;
@@ -24,29 +22,26 @@ body {
     color: #333;
 }
 
-/* Alert Styles */
 .alert {
-    color: #d9534f; /* Bootstrap's danger color */
+    color: #d9534f;
     text-align: center;
     margin-bottom: 15px;
 }
 
-/* Wallet Balance Styles */
 .wallet-balance {
     text-align: center;
     font-weight: bold;
     margin-bottom: 15px;
 }
 
-/* Reservations List Styles */
 .reservations {
-    list-style: none; /* Remove bullets from list */
+    list-style: none;
     padding: 0;
 }
 
 .reservation-card {
     display: flex;
-    justify-content: flex-start; /* Align items to the start */
+    justify-content: flex-start;
     align-items: center;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -60,30 +55,27 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Airplane Image Styles */
 .reservation-image {
-    flex: 1; /* Adjusts the width of the image container */
-    margin-right: 15px; /* Space between image and text */
-    overflow: hidden; /* Ensure rounded corners are applied */
+    flex: 1;
+    margin-right: 15px;
+    overflow: hidden;
 }
 
 .airplane-image {
-    width: 100%; /* Makes the image responsive */
-    height: auto; /* Maintains aspect ratio */
-    border-radius: 4px; /* Rounded corners */
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
 }
 
-/* Reservation Details Styles */
 .reservation-details {
-    flex: 2; /* Adjusts the width of the details container */
+    flex: 2;
 }
 
 .reservation-details p {
     margin: 5px 0;
-    color: #555; /* Dark gray text color */
+    color: #555;
 }
 
-/* Button Styles */
 button {
     background-color: #3498db;
     color: white;
@@ -95,19 +87,17 @@ button {
 }
 
 button:hover {
-    background-color: rgb(21, 88, 145); /* Darker hover state for stronger contrast */
+    background-color: rgb(21, 88, 145);
 }
 
-/* Cancel Button Specific Styles */
 .cancel-btn {
-    background-color: rgb(78, 135, 170); /* Slightly lighter blue for the cancel button */
+    background-color: rgb(78, 135, 170);
 }
 
 .cancel-btn:hover {
-    background-color: rgb(61, 71, 76); /* Darker hover color for cancel button */
+    background-color: rgb(61, 71, 76);
 }
 
-/* No Reservations Message Styles */
 .no-reservations {
     text-align: center;
     color: #555;

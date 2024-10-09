@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
-import UserService from '../services/UserService'; // Імпортуємо UserService
-import '../styles/Login.css'; // Використовуємо ті ж стилі, що й для логіна
+import UserService from '../services/UserService'; 
+import '../styles/Login.css'; 
 
 function Register() {
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState(''); // Додаємо стан для електронної пошти
+    const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -14,22 +14,17 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Реєстрація користувача
             await AuthService.register({ username, email, password });
-            // Логін після реєстрації
             await AuthService.login({ username, password });
 
-            // Отримуємо профіль користувача
             const userProfile = await UserService.getUserProfile();
-            localStorage.setItem('user', JSON.stringify(userProfile)); // Зберігаємо профіль користувача
-            
-            // Створюємо гаманець для користувача
+            localStorage.setItem('user', JSON.stringify(userProfile)); 
+
             await UserService.createWalletForUser(userProfile.id);
             
-            // Відправляємо подію про успішний вхід
             window.dispatchEvent(new Event('userLoggedIn'));
 
-            navigate('/'); // Перенаправлення на головну сторінку
+            navigate('/'); 
         } catch (error) {
             setError('Error during registration');
             console.error('Error registering:', error);
@@ -53,7 +48,7 @@ function Register() {
                 <div className="login-form-group">
                     <label className="login-form-subtitle">Email:</label>
                     <input
-                        type="email" // Додаємо поле для електронної пошти
+                        type="email" 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required

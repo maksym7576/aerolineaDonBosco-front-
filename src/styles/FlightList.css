@@ -77,15 +77,15 @@ button {
 }
 
 button:hover {
-    background-color: rgb(21, 88, 145); /* Darker hover state for stronger contrast */
+    background-color: rgb(21, 88, 145);
 }
 
 .cancel-btn {
-    background-color: rgb(78, 135, 170); /* Slightly lighter blue for the cancel button */
+    background-color: rgb(78, 135, 170); 
 }
 
 .cancel-btn:hover {
-    background-color: rgb(61, 71, 76); /* Darker hover color for cancel button */
+    background-color: rgb(61, 71, 76);
 }
 
 .available-seats {

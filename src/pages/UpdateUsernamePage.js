@@ -1,8 +1,8 @@
 // UpdateUsernamePage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserService from '../services/UserService'; // Імпортуємо UserService
-import UpdateUsernameForm from '../components/UpdateUsernameForm'; // Імпортуємо форму
+import UserService from '../services/UserService'; 
+import UpdateUsernameForm from '../components/UpdateUsernameForm'; 
 
 const UpdateUsernamePage = () => {
     const navigate = useNavigate();

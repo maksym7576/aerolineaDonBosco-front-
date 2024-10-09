@@ -10,7 +10,7 @@ class FlightImageService {
             const response = await axios.post(`${this.baseURL}/create/${flightId}`, formData, {
                 headers: { 
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data' // Format for file upload
+                    'Content-Type': 'multipart/form-data' 
                 }
             });
             return response.data;
@@ -20,11 +20,10 @@ class FlightImageService {
         }
     }
 
-    // Method to fetch image by flight ID
     async getImageByFlightId(flightId) {
         try {
             const response = await axios.get(`${this.baseURL}/flight/${flightId}`);
-            return response.data; // Assuming the response is the image data
+            return response.data; 
         } catch (error) {
             console.error('Error fetching image:', error.response ? error.response.data : error.message);
             throw error;

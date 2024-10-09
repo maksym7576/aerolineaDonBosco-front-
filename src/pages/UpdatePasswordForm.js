@@ -1,8 +1,8 @@
 // UpdatePasswordPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserService from '../services/UserService'; // Імпортуємо UserService
-import UpdatePasswordForm from '../components/UpdatePasswordForm'; // Імпортуємо форму
+import UserService from '../services/UserService'; 
+import UpdatePasswordForm from '../components/UpdatePasswordForm'; 
 
 const UpdatePasswordPage = () => {
     const navigate = useNavigate();

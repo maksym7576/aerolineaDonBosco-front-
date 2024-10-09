@@ -1,4 +1,4 @@
-/* Основні стилі форми */
+
 .search-form {
     background-color: #f9f9f9;
     padding: 30px;
@@ -22,13 +22,12 @@
 .form-subtitle {
     font-size: 18px;
     color: #34495e;
-    margin: 10px 0 5px; /* Залишаємо існуючі відступи */
+    margin: 10px 0 5px; 
     font-weight: 500;
 }
 
-/* Додано нижній відступ для підписів */
 .form-subtitle:last-child {
-    margin-bottom: 10px; /* Відступ між підписом дати та інпутом дати */
+    margin-bottom: 10px; 
 }
 
 .form-container {
