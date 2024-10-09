@@ -113,11 +113,3 @@ The application uses several services to communicate with the backend:
 - `WalletService`: Handles user wallet operations.
 
 Each service contains methods that make specific API calls to the backend. For detailed information about each API call, refer to the Features section above.
-
-## Contributing
-
-[Add contribution guidelines here]
-
-## License
-
-[Add license information here]
