@@ -1,6 +1,5 @@
 import React from 'react';
-import ReserveService from '../services/ReserveService';
-import WalletService from '../services/WalletService';
+import axios from 'axios';
 import '../styles/ReservationList.css'; 
 
 class ReservationList extends React.Component {
@@ -8,110 +7,108 @@ class ReservationList extends React.Component {
         super(props);
         this.state = {
             returnMessage: '',
-            localReservations: props.reservations || [],
-            walletBalance: null
+            reservations: props.reservations || [],
         };
-    }
-
-    componentDidMount() {
-        this.fetchWalletBalance();
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.reservations !== this.props.reservations) {
-            this.setState({ localReservations: this.props.reservations });
+            this.setState({ reservations: this.props.reservations });
         }
     }
 
-    fetchWalletBalance = async () => {
-        try {
-            const userId = localStorage.getItem('userId');
-            const walletData = await WalletService.getWalletByUserId(userId);
-            this.setState({ walletBalance: walletData.euro });
-        } catch (error) {
-            console.error('Error fetching wallet balance:', error);
-        }
-    }
+    handleCancelSeat = async (seatId) => {
+        const user = JSON.parse(localStorage.getItem('user'));
 
-    handleCancel = async (reservationId) => {
-        try {
-            await ReserveService.cancelReservation(reservationId);
-            this.setState(prevState => ({
-                returnMessage: 'Reservation canceled successfully.',
-                localReservations: prevState.localReservations.filter(res => res.id !== reservationId)
-            }));
-            this.props.onReservationChange();
-            this.fetchWalletBalance();
-            setTimeout(() => this.setState({ returnMessage: '' }), 5000);
-        } catch (error) {
+        if (!user) {
+            this.setState({ returnMessage: 'User not found in local storage.' });
+            return;
         }
-    }
 
-    createReservation = async (flight) => {
-        const reservationData = {
-            reservedSeats: flight.reservedSeats, 
-            flight: { id: flight.flight.id }, 
-            user: { id: localStorage.getItem('userId') } 
+        const requestData = {
+            seatId,
+            userId: user.id,
+            isConfirmed: true, // За замовчуванням підтверджуємо
         };
 
         try {
-            const result = await ReserveService.createReservation(reservationData);
-            this.setState(prevState => ({
-                returnMessage: 'Reservation created successfully.',
-                localReservations: [...prevState.localReservations, result]
-            }));
-            this.props.onReservationChange();
-            this.fetchWalletBalance();
+            const response = await axios.post('http://localhost:8080/api/seats/cancel', requestData);
+            const responseData = response.data;
+
+            if (responseData.totalReturn) {
+                this.setState(prevState => ({
+                    returnMessage: responseData.text,
+                    reservations: prevState.reservations.map(dto => ({
+                        ...dto,
+                        seatsList: dto.seatsList.filter(seat => seat.id !== seatId),
+                    })),
+                }));
+            } else {
+                this.setState({ returnMessage: responseData.text });
+            }
+
             setTimeout(() => this.setState({ returnMessage: '' }), 5000);
         } catch (error) {
-            console.error('Error creating reservation:', error);
-            this.setState({ returnMessage: 'Failed to create reservation.' });
+            console.error('Error cancelling seat:', error);
+            this.setState({ returnMessage: 'Failed to cancel seat.' });
         }
-    }
+    };
 
     render() {
-        const { returnMessage, localReservations, walletBalance } = this.state;
+        const { returnMessage, reservations } = this.state;
+
         return (
             <div className="reservation-list">
-                <h3>My Reservations</h3>
+                <h3>Available Flights and Seats</h3>
                 {returnMessage && <div className="alert">{returnMessage}</div>}
-                <p className="wallet-balance">
-                    Wallet Balance: {walletBalance !== null ? `${walletBalance} EUR` : 'Loading...'}
-                </p>
                 <ul className="reservations">
-                    {localReservations.length > 0 ? (
-                        localReservations.map((reservation) => (
-                            <li key={reservation.id} className="reservation-card">
-                                <div className="reservation-image">
-                                    {reservation.flight.images && reservation.flight.images.length > 0 ? (
-                                        <img
-                                            src={`data:image/jpeg;base64,${reservation.flight.images[0].imageData}`}
-                                            alt={`Flight from ${reservation.flight.origin.city} to ${reservation.flight.destination.city}`}
-                                            className="airplane-image"
-                                        />
+                    {reservations.length > 0 ? (
+                        reservations.map((dto, index) => (
+                            <li key={index} className="reservation-card">
+                                {/* Інформація про рейс */}
+                                <div className="flight-details">
+                                    <h4>Flight Details</h4>
+                                    <p>
+                                        <strong>From:</strong> {dto.flight.origin.city}, {dto.flight.origin.country}
+                                    </p>
+                                    <p>
+                                        <strong>To:</strong> {dto.flight.destination.city}, {dto.flight.destination.country}
+                                    </p>
+                                    <p>
+                                        <strong>Departure Time:</strong>{' '}
+                                        {new Date(dto.flight.departureTime).toLocaleString()}
+                                    </p>
+                                </div>
+                                {/* Інформація про місця */}
+                                <div className="seats-details">
+                                    <h4>Seats</h4>
+                                    {dto.seatsList.length > 0 ? (
+                                        <ul>
+                                            {dto.seatsList.map((seat) => (
+                                                <li key={seat.id} className="seat-info">
+                                                    <p><strong>Seat:</strong> {seat.seatName}</p>
+                                                    <p><strong>Cost:</strong> {seat.costOfSeat} EUR</p>
+                                                    <p>
+                                                        <strong>Available:</strong>{' '}
+                                                        {seat.available ? 'Yes' : 'No'}
+                                                    </p>
+                                                    <button
+                                                        className="cancel-btn"
+                                                        onClick={() => this.handleCancelSeat(seat.id)}
+                                                    >
+                                                        Cancel Seat
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
                                     ) : (
-                                        <div className="no-image">No Image</div>
+                                        <p>No seats available for this flight.</p>
                                     )}
                                 </div>
-                                <div className="reservation-details">
-                                    <p><strong>Flight:</strong> {reservation.flight.origin.city} to {reservation.flight.destination.city}</p>
-                                    <p><strong>Reserved Seats:</strong> {reservation.reservedSeats}</p>
-                                    <p><strong>Price per Seat:</strong> {reservation.flight.costEuro} EUR</p>
-                                    <p><strong>Total Cost:</strong> {reservation.flight.costEuro * reservation.reservedSeats} EUR</p>
-                                    <p><strong>Date:</strong> {new Date(reservation.flight.departureTime).toLocaleDateString()}</p>
-                                </div>
-                                {new Date(reservation.flight.departureTime) >= new Date() && (
-                                    <button
-                                        className="cancel-btn"
-                                        onClick={() => this.handleCancel(reservation.id)}
-                                    >
-                                        Cancel
-                                    </button>
-                                )}
                             </li>
                         ))
                     ) : (
-                        <p className="no-reservations">No reservations found</p>
+                        <p>No flights found.</p>
                     )}
                 </ul>
             </div>

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class ReserveService {
     constructor() {
-        this.baseURL = 'http://localhost:8080/api/v1'; 
+        this.baseURL = 'http://localhost:8080/api/seats'; 
 
         this.api = axios.create({
             baseURL: this.baseURL,
@@ -36,7 +36,7 @@ class ReserveService {
 
     async getAllReservationByUserId(userId) {
         try {
-            const response = await this.api.get(`/reservation/user/${userId}`);
+            const response = await this.api.get(`/user/${userId}`);
             return response.data; 
         } catch (error) {
             console.error('Error fetching reservations:', error);

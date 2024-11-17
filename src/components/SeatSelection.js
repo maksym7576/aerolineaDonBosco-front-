@@ -115,13 +115,13 @@ const SeatSelection = ({ flightId }) => {
             className={`seat ${!seat.available ? 'disabled' : 
               selectedSeats.find(s => s.id === seat.id) ? 'selected' : 'available'}`}
           >
-            {seat.seatNumber}
+            {seat.seatName}
           </div>
         ))}
       </div>
 
       <div className="summary">
-        <h3>Selected Seats: {selectedSeats.map(s => s.seatNumber).join(', ')}</h3>
+        <h3>Selected Seats: {selectedSeats.map(s => s.seatName).join(', ')}</h3>
         <h4>Total Cost: €{totalCost.toFixed(2)}</h4>
         <button 
           onClick={handleConfirmPurchase}
