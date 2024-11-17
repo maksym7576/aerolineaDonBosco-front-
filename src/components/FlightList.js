@@ -168,18 +168,19 @@ class FlightList extends React.Component {
                                     {flight.destination.country || 'Unknown Country'} {flight.destination.city || 'Unknown City'}
                                 </h3>
                                 <p><strong>Departure Time:</strong> {flight.departureTime ? new Date(flight.departureTime).toLocaleString() : 'N/A'}</p>
-                                <p><strong>Passengers Capacity:</strong> {flight.passengers?.capacity || 'N/A'}</p>
-                                <p><strong>Reserved Seats:</strong> {flight.passengers?.reservedSeats || '0'}</p>
-                                {flight.availableSeat ? (
+                                <p><strong>Passengers Capacity:</strong> {flight.capacity || 'N/A'}</p>
+                                <p><strong>Reserved Seats:</strong> {flight.reservedSeats || '0'}</p>
+                                <p><strong>Available Seats:</strong> {flight.capacity - flight.reservedSeats}</p>
+                                {flight.capacity - flight.reservedSeats > 0 ? (
                                     <p className="available-seats">Seats available</p>
                                 ) : (
                                     <p className="no-seats">Fully booked</p>
                                 )}
                                 <p><strong>Cost:</strong> {flight.costEuro} EUR</p>
-                                {flight.availableSeat && !inputVisibility[flight.id] ? (
+                                {flight.capacity - flight.reservedSeats > 0 && !inputVisibility[flight.id] ? (
                                     <button onClick={() => this.toggleInput(flight.id)}>Buy</button>
                                 ) : (
-                                    inputVisibility[flight.id] && flight.availableSeat && (
+                                    inputVisibility[flight.id] && flight.capacity - flight.reservedSeats > 0 && (
                                         <div>
                                             <input
                                                 type="number"
