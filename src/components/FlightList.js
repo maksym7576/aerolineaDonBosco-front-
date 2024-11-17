@@ -2,6 +2,7 @@ import React from 'react';
 import ReserveService from '../services/ReserveService';
 import WalletService from '../services/WalletService';
 import FlightImageService from '../services/FlightImageService';
+import SeatSelection from './SeatSelection';
 import '../styles/FlightList.css';
 
 class FlightList extends React.Component {
@@ -13,7 +14,9 @@ class FlightList extends React.Component {
             error: '',
             userId: null,
             walletBalance: null,
-            flightImages: {}
+            flightImages: {},
+            selectedFlightId: null,
+            showSeatSelection: false,
         };
     }
 
@@ -74,80 +77,31 @@ class FlightList extends React.Component {
         }
     };
 
-    toggleInput = (flightId) => {
-        this.setState((prevState) => {
-            const isVisible = !prevState.inputVisibility[flightId];
-            return {
-                inputVisibility: {
-                    ...prevState.inputVisibility,
-                    [flightId]: isVisible,
-                },
-                inputValues: {
-                    ...prevState.inputValues,
-                    [flightId]: '',
-                },
-                error: '',
-            };
+    toggleSeatSelection = (flightId) => {
+        this.setState((prevState) => ({
+            selectedFlightId: prevState.selectedFlightId === flightId ? null : flightId,
+            showSeatSelection: prevState.selectedFlightId !== flightId,
+            error: ''
+        }));
+    };
+
+    handleSeatSelectionSuccess = () => {
+        this.fetchWalletBalance();
+        this.setState({
+            selectedFlightId: null,
+            showSeatSelection: false
         });
-    };
-
-    handleInputChange = (flightId, e) => {
-        const value = e.target.value;
-        if (value === '' || Number(value) >= 1) {
-            this.setState((prevState) => ({
-                inputValues: {
-                    ...prevState.inputValues,
-                    [flightId]: value,
-                },
-                error: '',
-            }));
-        } else {
-            this.setState({ error: 'Value must be greater than 0' });
-        }
-    };
-
-    handleReserve = async (flight) => {
-        const flightId = flight.id;
-        const reservedSeats = Number(this.state.inputValues[flightId]);
-
-        if (!this.state.userId) {
-            this.setState({ error: 'User not authenticated. Please log in again.' });
-            return;
-        }
-
-        if (reservedSeats < 1) {
-            this.setState({ error: "You can't reserve less than 1 seat" });
-            return;
-        }
-
-        const reservationData = {
-            reservedSeats,
-            flight: { id: flightId },
-            user: { id: this.state.userId },
-        };
-
-        try {
-            const response = await ReserveService.createReservation(reservationData);
-            if (response && response.id) {
-                alert('Reservation successful!');
-                await this.fetchWalletBalance();
-                this.toggleInput(flightId); // Hide the input after reservation
-            } else {
-                this.setState({ error: 'Unexpected response from server' });
-            }
-        } catch (error) {
-            console.error('Error while reserving:', error);
-            this.setState({ error: 'Failed to make reservation: ' + (error.response?.data?.message || error.message) });
-        }
     };
 
     render() {
         const { flights } = this.props;
-        const { inputVisibility, inputValues, error, userId, flightImages } = this.state;
+        const { error, selectedFlightId, showSeatSelection } = this.state;
 
         return (
             <div className="flight-list">
                 <h2>Search Results</h2>
+                {error && <p className="error-message">{error}</p>}
+                
                 {flights && flights.length > 0 ? (
                     flights.map((flight) => (
                         <div key={flight.id} className="flight-card">
@@ -177,27 +131,23 @@ class FlightList extends React.Component {
                                     <p className="no-seats">Fully booked</p>
                                 )}
                                 <p><strong>Cost:</strong> {flight.costEuro} EUR</p>
-                                {flight.capacity - flight.reservedSeats > 0 && !inputVisibility[flight.id] ? (
-                                    <button onClick={() => this.toggleInput(flight.id)}>Buy</button>
-                                ) : (
-                                    inputVisibility[flight.id] && flight.capacity - flight.reservedSeats > 0 && (
-                                        <div>
-                                            <input
-                                                type="number"
-                                                value={inputValues[flight.id] || ''}
-                                                onChange={(e) => this.handleInputChange(flight.id, e)}
-                                                placeholder="Number of Passengers"
-                                                min="1"
+                                
+                                {flight.capacity - flight.reservedSeats > 0 && (
+                                    <div>
+                                        <button 
+                                            onClick={() => this.toggleSeatSelection(flight.id)}
+                                            className="select-seats-btn"
+                                        >
+                                            {selectedFlightId === flight.id ? 'Hide Seats' : 'Select Seats'}
+                                        </button>
+                                        
+                                        {selectedFlightId === flight.id && showSeatSelection && (
+                                            <SeatSelection 
+                                                flightId={flight.id}
+                                                onSuccess={this.handleSeatSelectionSuccess}
                                             />
-                                            {error && <p style={{ color: 'red' }}>{error}</p>}
-                                            <button onClick={() => this.handleReserve(flight)}>
-                                                Buy
-                                            </button>
-                                            <button className="cancel-btn" onClick={() => this.toggleInput(flight.id)}>
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    )
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         </div>
