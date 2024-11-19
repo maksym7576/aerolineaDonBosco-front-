@@ -1,3 +1,4 @@
+// ReserveService.js
 import axios from 'axios';
 
 class ReserveService {
@@ -22,10 +23,6 @@ class ReserveService {
 
     async createReservation(reservationData) {
         try {
-            const userId = localStorage.getItem('userId'); 
-            if (!userId) {
-                throw new Error('User not authenticated'); 
-            }
             const response = await this.api.post(`/new/reservation`, reservationData);
             return response.data; 
         } catch (error) {
@@ -51,6 +48,17 @@ class ReserveService {
         } catch (error) {
             console.error('Error canceling reservation:', error);
             throw error; 
+        }
+    }
+
+    // Новий метод для отримання місць
+    async fetchSeats(flightId) {
+        try {
+            const response = await this.api.get(`/countDiscount/flight/${flightId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching seats:', error);
+            throw error;
         }
     }
 }

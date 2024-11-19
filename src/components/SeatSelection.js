@@ -1,5 +1,7 @@
+// SeatSelection.js
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import ReserveService from '../services/ReserveService'; // Імпорт сервісу
+import '../styles/SeatSelection.css';
 
 const SeatSelection = ({ flightId }) => {
   const [seats, setSeats] = useState([]);
@@ -16,8 +18,8 @@ const SeatSelection = ({ flightId }) => {
   const fetchSeats = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/seats/flight/${flightId}`);
-      setSeats(response.data);
+      const data = await ReserveService.fetchSeats(flightId); // Виклик методу з сервісу
+      setSeats(data);
     } catch (err) {
       setError('Failed to fetch seats data');
     } finally {
@@ -26,18 +28,20 @@ const SeatSelection = ({ flightId }) => {
   };
 
   const handleSeatSelect = (seat) => {
-    if (!seat.available) return;
+    if (!seat.seats.available) return;
 
     setSelectedSeats(prev => {
-      const isSelected = prev.find(s => s.id === seat.id);
+      const isSelected = prev.find(s => s.seats.id === seat.seats.id);
       const newSelection = isSelected
-        ? prev.filter(s => s.id !== seat.id)
+        ? prev.filter(s => s.seats.id !== seat.seats.id)
         : [...prev, seat];
-      
-      const newTotal = newSelection.reduce((sum, s) => 
-        sum + (s.costOfSeat * (1 - s.discount / 100)), 0);
+
+      const newTotal = newSelection.reduce((sum, s) => {
+        return sum + (s.discountedPrice > 0 ? s.discountedPrice : s.originalPrice);
+      }, 0);
+
       setTotalCost(newTotal);
-      
+
       return newSelection;
     });
   };
@@ -47,41 +51,31 @@ const SeatSelection = ({ flightId }) => {
       setError('Please select at least one seat');
       return;
     }
-  
+
     try {
       setLoading(true);
-  
-      // Retrieve the user from localStorage and extract the userId
       const user = JSON.parse(localStorage.getItem("user"));
       const userId = user ? user.id : null;
-  
+
       if (!userId) {
         setError('User not authenticated');
         return;
       }
-  
+
       const reservationData = {
-        seatIdList: selectedSeats.map(seat => seat.id),
+        seatIdList: selectedSeats.map(seat => seat.seats.id),
         flightId: flightId,
-        userId: userId // Use the extracted userId
+        userId: userId
       };
       console.log(reservationData);
-  
-      const response = await axios.post('http://localhost:8080/api/seats/new/reservation', 
-        reservationData,
-        {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-  
-      if (response.data === "Successful") {
+
+      const response = await ReserveService.createReservation(reservationData);
+
+      if (response === "Successful") {
         setSuccess('Your seats have been successfully reserved!');
         setSelectedSeats([]);
         setTotalCost(0);
-        fetchSeats(); // Refresh seats data
+        fetchSeats();
       }
     } catch (err) {
       setError(err.response?.data || 'Failed to complete reservation');
@@ -91,39 +85,51 @@ const SeatSelection = ({ flightId }) => {
   };
 
   return (
-    <div className="seat-selection-container">
+    <div className="seat-selection-wrapper">
       <h2>Select Your Seats</h2>
+      
       {error && (
         <div className="alert alert-error">
-          <h3>Error</h3>
           <p>{error}</p>
         </div>
       )}
-      
+
       {success && (
         <div className="alert alert-success">
-          <h3>Success</h3>
           <p>{success}</p>
         </div>
       )}
 
-      <div className="seat-grid">
+      <div className="seat-selection-grid">
         {seats.map((seat) => (
           <div
-            key={seat.id}
+            key={seat.seats.id}
             onClick={() => handleSeatSelect(seat)}
-            className={`seat ${!seat.available ? 'disabled' : 
-              selectedSeats.find(s => s.id === seat.id) ? 'selected' : 'available'}`}
+            className={`seat-selection-item 
+              ${!seat.seats.available ? 'disabled' : 
+              selectedSeats.find(s => s.seats.id === seat.seats.id) ? 'selected' : 'available'}`}
           >
-            {seat.seatName}
+            <div className="seat-name">{seat.seats.seatName}</div>
+            <div className="seat-price-container">
+              {seat.discountedPrice > 0 ? (
+                <>
+                  <span className="original-price">€{seat.originalPrice.toFixed(2)}</span>
+                  <span className="final-price">€{seat.discountedPrice.toFixed(2)}</span>
+                  <div className="discount-badge">{Math.abs(seat.percentage).toFixed(0)}% OFF</div>
+                </>
+              ) : (
+                <span className="final-price">€{seat.originalPrice.toFixed(2)}</span>
+              )}
+            </div>
           </div>
         ))}
       </div>
 
-      <div className="summary">
-        <h3>Selected Seats: {selectedSeats.map(s => s.seatName).join(', ')}</h3>
+      <div className="seat-selection-summary">
+        <h3>Selected Seats: {selectedSeats.map(s => s.seats.seatName).join(', ')}</h3>
         <h4>Total Cost: €{totalCost.toFixed(2)}</h4>
-        <button 
+        <button
+          className="confirm-purchase-btn"
           onClick={handleConfirmPurchase}
           disabled={loading || selectedSeats.length === 0}
         >
