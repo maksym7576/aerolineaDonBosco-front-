@@ -1,4 +1,3 @@
-// FlightForm.js
 import React, { useState } from 'react';
 import FlightService from '../services/FlightService';
 import FlightImageService from '../services/FlightImageService';
@@ -6,7 +5,8 @@ import '../styles/FlightForm.css';
 
 const FlightForm = ({ passengers, routes }) => {
     const [selectedRoutes, setSelectedRoutes] = useState([]);
-    const [selectedPassengerId, setSelectedPassengerId] = useState('');
+    const [capacity, setCapacity] = useState('');
+    const [reservedSeats, setReservedSeats] = useState(0);
     const [departureTime, setDepartureTime] = useState('');
     const [costEuro, setCostEuro] = useState('');
     const [file, setFile] = useState(null);
@@ -32,7 +32,7 @@ const FlightForm = ({ passengers, routes }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (selectedRoutes.length < 2 || !selectedPassengerId || !departureTime || !costEuro || !file) {
+        if (selectedRoutes.length !== 2 || !departureTime || !capacity || !costEuro || !file) {
             setError('All fields are required.');
             return;
         }
@@ -44,23 +44,27 @@ const FlightForm = ({ passengers, routes }) => {
 
             const newFlight = {
                 departureTime,
-                availableSeat: true,
-                destination: { id: destination.id },
                 origin: { id: origin.id },
-                passengers: { id: selectedPassengerId },
+                destination: { id: destination.id },
+                capacity: parseInt(capacity),
+                reservedSeats: parseInt(reservedSeats),
                 costEuro: parseFloat(costEuro),
             };
 
+            // Create flight
             const createdFlight = await FlightService.createFlight(newFlight, token);
             console.log('Flight created successfully:', createdFlight);
 
+            // Upload flight image
             const formData = new FormData();
             formData.append('file', file);
             await FlightImageService.uploadFlightImage(createdFlight.id, formData, token);
             console.log('Flight image uploaded successfully.');
 
+            // Reset form
             setSelectedRoutes([]);
-            setSelectedPassengerId('');
+            setCapacity('');
+            setReservedSeats(0);
             setDepartureTime('');
             setCostEuro('');
             setFile(null);
@@ -88,26 +92,24 @@ const FlightForm = ({ passengers, routes }) => {
                     ))}
                 </div>
 
-                <h4>Select Passenger:</h4>
-                <div className="button-group">
-                    {passengers.map((passenger) => (
-                        <button
-                            key={passenger.id}
-                            className={`passenger-button ${selectedPassengerId === passenger.id ? 'active' : ''}`}
-                            onClick={() => setSelectedPassengerId(passenger.id)}
-                            type="button"
-                        >
-                            Capacity: {passenger.capacity}, Reserved: {passenger.reservedSeats}
-                        </button>
-                    ))}
-                </div>
-
                 <div className="input-container">
                     <input
                         type="datetime-local"
                         value={departureTime}
                         onChange={(e) => setDepartureTime(e.target.value)}
                         placeholder="Departure Time"
+                    />
+                    <input
+                        type="number"
+                        placeholder="Capacity"
+                        value={capacity}
+                        onChange={(e) => setCapacity(e.target.value)}
+                    />
+                    <input
+                        type="number"
+                        placeholder="Reserved Seats"
+                        value={reservedSeats}
+                        onChange={(e) => setReservedSeats(e.target.value)}
                     />
                     <input
                         type="number"

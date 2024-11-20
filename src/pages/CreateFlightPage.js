@@ -4,7 +4,6 @@ import RoutesService from '../services/RoutesService';
 import PassengersService from '../services/PassengersService';
 import FlightForm from '../components/FlightForm';
 import FlightListAdmin from '../components/FlightListAdmin';
-import PassengersForm from '../components/PassengersForm';
 import RouteForm from '../components/RouteForm';
 import '../styles/CreateFlightPage.css'; 
 
@@ -35,10 +34,6 @@ const CreateFlightPage = () => {
         fetchPassengers();
     }, []);
 
-    const handlePassengerAdded = (newPassenger) => {
-        setPassengers((prevPassengers) => [...prevPassengers, newPassenger]);
-    };
-
     const handleRouteAdded = (newRoute) => {
         setRoutes((prevRoutes) => [...prevRoutes, newRoute]);
     };
@@ -47,7 +42,6 @@ const CreateFlightPage = () => {
         <div>
         <div className="create-flight-page-container">
             <h2>Add Passenger</h2>
-            <PassengersForm onPassengerAdded={handlePassengerAdded} />
 
             <h2>Add Route</h2>
             <RouteForm onRouteAdded={handleRouteAdded} />

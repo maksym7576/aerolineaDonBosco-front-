@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import FlightService from '../services/FlightService';
+import SeatsForm from './SeatsForm'; // Імпортуємо SeatsForm
 import '../styles/FlightListAdmin.css';
 
 const FlightListAdmin = () => {
     const [flights, setFlights] = useState([]);
     const [error, setError] = useState('');
+    const [selectedFlightId, setSelectedFlightId] = useState(null); // Для управління вибором польоту
 
     const fetchAllFlights = async () => {
         try {
@@ -28,8 +30,8 @@ const FlightListAdmin = () => {
         }
     };
 
-    const handleUpdate = (flight) => {
-        console.log('Update flight:', flight);
+    const handleAddSeats = (flightId) => {
+        setSelectedFlightId(flightId); // Встановлюємо ID польоту для додавання місць
     };
 
     return (
@@ -58,8 +60,8 @@ const FlightListAdmin = () => {
                                 </h3>
                                 <p><strong>Departure Time:</strong> {new Date(flight.departureTime).toLocaleString() || 'N/A'}</p>
                                 <p><strong>Cost:</strong> {flight.costEuro ? `${flight.costEuro} EUR` : 'N/A'}</p>
-                                {/* <button onClick={() => handleUpdate(flight)}>Update</button> */}
                                 <button onClick={() => handleDelete(flight.id)}>Delete</button>
+                                <button onClick={() => handleAddSeats(flight.id)}>Add Seats</button>
                             </div>
                         ))}
                     </div>
@@ -67,6 +69,16 @@ const FlightListAdmin = () => {
                     <p>No flights found</p>
                 )}
             </div>
+
+            {selectedFlightId && (
+                <div className="seats-panel">
+                    <h3>Add Seats for Flight ID: {selectedFlightId}</h3>
+                    <SeatsForm flightId={selectedFlightId} />
+                    <button onClick={() => setSelectedFlightId(null)} className="close-panel">
+                        Close
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

@@ -21,6 +21,17 @@ class ReserveService {
         });
     }
 
+    // Method for creating seats
+    async createSeats(seatsList) {
+        try {
+            const response = await this.api.post('/create/all', seatsList);
+            return response.data;
+        } catch (error) {
+            console.error('Error creating seats:', error);
+            throw error;
+        }
+    }
+
     async createReservation(reservationData) {
         try {
             const response = await this.api.post(`/new/reservation`, reservationData);
@@ -51,7 +62,6 @@ class ReserveService {
         }
     }
 
-    // Новий метод для отримання місць
     async fetchSeats(flightId) {
         try {
             const response = await this.api.get(`/countDiscount/flight/${flightId}`);
