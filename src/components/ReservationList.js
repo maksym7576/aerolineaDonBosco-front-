@@ -17,7 +17,7 @@ class ReservationList extends React.Component {
         }
     }
 
-    handleCancelSeat = async (seatId) => {
+    handleCancelSeat = async (seatId, flightId) => {
         const user = JSON.parse(localStorage.getItem('user'));
 
         if (!user) {
@@ -28,29 +28,41 @@ class ReservationList extends React.Component {
         const requestData = {
             seatId,
             userId: user.id,
-            isConfirmed: true, // За замовчуванням підтверджуємо
+            isConfirmed: true,
         };
 
         try {
             const response = await axios.post('http://localhost:8080/api/seats/cancel', requestData);
-            const responseData = response.data;
 
-            if (responseData.totalReturn) {
-                this.setState(prevState => ({
-                    returnMessage: responseData.text,
-                    reservations: prevState.reservations.map(dto => ({
+            this.setState((prevState) => ({
+                returnMessage: 'Seat successfully cancelled',
+                reservations: prevState.reservations.map((dto) => 
+                    dto.flight.id === flightId 
+                    ? {
                         ...dto,
-                        seatsList: dto.seatsList.filter(seat => seat.id !== seatId),
-                    })),
-                }));
-            } else {
-                this.setState({ returnMessage: responseData.text });
-            }
+                        seatsList: dto.seatsList.filter((seat) => seat.id !== seatId),
+                        flight: {
+                            ...dto.flight,
+                            reservedSeats: dto.flight.reservedSeats - 1
+                        }
+                    }
+                    : dto
+                ),
+            }));
 
-            setTimeout(() => this.setState({ returnMessage: '' }), 5000);
+            setTimeout(() => {
+                this.setState({ returnMessage: '' });
+            }, 3000);
+
         } catch (error) {
             console.error('Error cancelling seat:', error);
-            this.setState({ returnMessage: 'Failed to cancel seat.' });
+            this.setState({ 
+                returnMessage: error.response?.data?.message || 'Failed to cancel seat' 
+            });
+
+            setTimeout(() => {
+                this.setState({ returnMessage: '' });
+            }, 3000);
         }
     };
 
@@ -65,36 +77,49 @@ class ReservationList extends React.Component {
                     {reservations.length > 0 ? (
                         reservations.map((dto, index) => (
                             <li key={index} className="reservation-card">
-                                {/* Інформація про рейс */}
                                 <div className="flight-details">
                                     <h4>Flight Details</h4>
+                                    {dto.flight.images && dto.flight.images.length > 0 && (
+                                        <img
+                                            src={`data:image/jpeg;base64,${dto.flight.images[0].imageData}`}
+                                            alt="Flight"
+                                            className="flight-image"
+                                        />
+                                    )}
                                     <p>
-                                        <strong>From:</strong> {dto.flight.origin.city}, {dto.flight.origin.country}
+                                        <strong>From:</strong>{' '}
+                                        {dto.flight?.origin?.city || 'N/A'},{' '}
+                                        {dto.flight?.origin?.country || 'N/A'}
                                     </p>
                                     <p>
-                                        <strong>To:</strong> {dto.flight.destination.city}, {dto.flight.destination.country}
+                                        <strong>To:</strong>{' '}
+                                        {dto.flight?.destination?.city || 'N/A'},{' '}
+                                        {dto.flight?.destination?.country || 'N/A'}
                                     </p>
                                     <p>
                                         <strong>Departure Time:</strong>{' '}
-                                        {new Date(dto.flight.departureTime).toLocaleString()}
+                                        {dto.flight?.departureTime
+                                            ? new Date(dto.flight.departureTime).toLocaleString()
+                                            : 'N/A'}
+                                    </p>
+                                    <p>
+                                        <strong>Reserved Seats:</strong> {dto.flight?.reservedSeats || 0}/{dto.flight?.capacity || 'N/A'}
                                     </p>
                                 </div>
-                                {/* Інформація про місця */}
                                 <div className="seats-details">
                                     <h4>Seats</h4>
-                                    {dto.seatsList.length > 0 ? (
+                                    {dto.seatsList && dto.seatsList.length > 0 ? (
                                         <ul>
                                             {dto.seatsList.map((seat) => (
                                                 <li key={seat.id} className="seat-info">
                                                     <p><strong>Seat:</strong> {seat.seatName}</p>
-                                                    <p><strong>Cost:</strong> {seat.costOfSeat} EUR</p>
                                                     <p>
                                                         <strong>Available:</strong>{' '}
                                                         {seat.available ? 'Yes' : 'No'}
                                                     </p>
                                                     <button
                                                         className="cancel-btn"
-                                                        onClick={() => this.handleCancelSeat(seat.id)}
+                                                        onClick={() => this.handleCancelSeat(seat.id, dto.flight.id)}
                                                     >
                                                         Cancel Seat
                                                     </button>

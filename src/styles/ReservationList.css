@@ -4,34 +4,38 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f2f2f2;
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 .reservation-list {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 30px auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .reservation-list h3 {
     text-align: center;
+    font-size: 24px;
     margin-bottom: 20px;
-    color: #333;
+    color: #2c3e50;
 }
 
 .alert {
-    color: #d9534f;
+    color: #e74c3c;
     text-align: center;
     margin-bottom: 15px;
+    font-weight: bold;
 }
 
 .wallet-balance {
     text-align: center;
     font-weight: bold;
     margin-bottom: 15px;
+    color: #27ae60;
 }
 
 .reservations {
@@ -41,77 +45,132 @@ body {
 
 .reservation-card {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #fff;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin: 10px 0;
+    margin: 15px 0;
     padding: 15px;
     transition: box-shadow 0.3s ease;
 }
 
 .reservation-card:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.reservation-image {
+.flight-image {
     flex: 1;
-    margin-right: 15px;
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
     overflow: hidden;
+    margin-right: 20px;
 }
 
-.airplane-image {
+.flight-image img {
     width: 100%;
     height: auto;
-    border-radius: 4px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
-.reservation-details {
+.flight-details {
     flex: 2;
+    padding: 10px;
 }
 
-.reservation-details p {
-    margin: 5px 0;
+.flight-details h4 {
+    font-size: 20px;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.flight-details p {
+    margin: 8px 0;
     color: #555;
+    line-height: 1.4;
+}
+
+.seats-details {
+    flex: 1.5;
+    padding: 10px;
+    border-left: 1px solid #ddd;
+}
+
+.seats-details h4 {
+    font-size: 18px;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.seats-details ul {
+    padding: 0;
+    list-style: none;
+}
+
+.seat-info {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+.seat-info:hover {
+    background-color: #f8f9fa;
+}
+
+.seat-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
 }
 
 button {
+    display: inline-block;
     background-color: #3498db;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 15px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: rgb(21, 88, 145);
+    background-color: #2980b9;
 }
 
 .cancel-btn {
-    background-color: rgb(78, 135, 170);
+    background-color: #e74c3c;
+    margin-top: 5px;
 }
 
 .cancel-btn:hover {
-    background-color: rgb(61, 71, 76);
+    background-color: #c0392b;
 }
 
 .no-reservations {
     text-align: center;
-    color: #555;
+    color: #7f8c8d;
+    font-size: 16px;
     font-weight: bold;
     margin-top: 20px;
 }
 
 .no-image {
     width: 100%;
-    height: 100%;
-    background-color: #eaeaea;
+    height: 150px;
+    background-color: #ecf0f1;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #999;
-    border-radius: 4px;
+    color: #7f8c8d;
+    font-size: 14px;
+    border-radius: 8px;
+    text-transform: uppercase;
 }
