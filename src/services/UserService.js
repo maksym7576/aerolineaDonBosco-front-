@@ -70,6 +70,17 @@ class UserService {
             throw error;
         }
     }
+
+    async getWalletByUserId(userId) {
+        try {
+            const response = await this.api.get(`/wallet/${userId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching wallet:', error);
+            throw error;
+        }
+    }
+    
 }
 
 export default new UserService();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
-import WalletService from '../services/WalletService';
+import UserService from '../services/UserService'; // Виправлено для узгодженості
 import '../styles/Login.css';
 
 function Login() {
@@ -13,15 +13,21 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // Логін
             await AuthService.login({ username, password });
+
+            // Отримання профілю користувача
             const userProfile = await AuthService.getUserProfile();
             localStorage.setItem('user', JSON.stringify(userProfile));
 
-            const walletData = await WalletService.getWalletByUserId(userProfile.id);
+            // Отримання гаманця користувача
+            const walletData = await UserService.getWalletByUserId(userProfile.id);
             localStorage.setItem('wallet', JSON.stringify(walletData));
 
+            // Оповіщення про логін
             window.dispatchEvent(new Event('userLoggedIn'));
 
+            // Перенаправлення на головну
             navigate('/');
         } catch (error) {
             setError('Invalid username or password');
