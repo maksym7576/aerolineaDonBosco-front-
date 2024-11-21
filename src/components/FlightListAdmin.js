@@ -59,7 +59,9 @@ const FlightListAdmin = () => {
                                     {flight.destination.country || 'Unknown Country'} {flight.destination.city || 'Unknown City'}
                                 </h3>
                                 <p><strong>Departure Time:</strong> {new Date(flight.departureTime).toLocaleString() || 'N/A'}</p>
-                                <p><strong>Cost:</strong> {flight.costEuro ? `${flight.costEuro} EUR` : 'N/A'}</p>
+                                <p><strong>Passengers Capacity:</strong> {flight.capacity || 'N/A'}</p>
+                                <p><strong>Reserved Seats:</strong> {flight.reservedSeats || '0'}</p>
+                                <p><strong>Available Seats:</strong> {flight.capacity - flight.reservedSeats}</p>
                                 <button onClick={() => handleDelete(flight.id)}>Delete</button>
                                 <button onClick={() => handleAddSeats(flight.id)}>Add Seats</button>
                             </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReserveService from '../services/ReserveService'; 
+import '../styles/SeatsForm.css';
 
 const SeatsForm = ({ flightId }) => {
     const [seatsList, setSeatsList] = useState([]);

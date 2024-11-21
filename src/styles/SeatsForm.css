@@ -1,0 +1,133 @@
+.seats-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .seats-form-container h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+  
+  .seat-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .seat-input-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .seat-input-container input:focus {
+    border-color: #3498db;
+    outline: none;
+  }
+  
+  .seat-input-container button {
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .seat-input-container button:hover {
+    background-color: #2980b9;
+  }
+  
+  .seats-list {
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .seats-list h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #2c3e50;
+  }
+  
+  .seats-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .seats-list li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #2c3e50;
+  }
+  
+  .error {
+    color: #e74c3c;
+    background-color: #f8d7da;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .success {
+    color: #27ae60;
+    background-color: #d4edda;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #27ae60;
+  }
+  
+  .submit-button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+  }
+  
+  /* Адаптивність */
+  @media (max-width: 768px) {
+    .seats-form-container {
+      padding: 15px;
+    }
+  
+    .seats-list h4 {
+      font-size: 16px;
+    }
+  
+    .submit-button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  

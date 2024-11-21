@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import '../styles/ReservationList.css'; 
+import '../styles/ReservationList.css';
 
 class ReservationList extends React.Component {
     constructor(props) {
@@ -8,6 +8,11 @@ class ReservationList extends React.Component {
         this.state = {
             returnMessage: '',
             reservations: props.reservations || [],
+            showConfirmModal: false,
+            confirmMessage: '',
+            confirmSeatId: null,
+            confirmFlightId: null,
+            isConfirmed: true, // Додаємо стан для підтвердження
         };
     }
 
@@ -17,7 +22,8 @@ class ReservationList extends React.Component {
         }
     }
 
-    handleCancelSeat = async (seatId, flightId) => {
+    // Обробка скасування місця
+    handleCancelSeat = async (seatId, flightId, isConfirmed) => {
         const user = JSON.parse(localStorage.getItem('user'));
 
         if (!user) {
@@ -28,36 +34,49 @@ class ReservationList extends React.Component {
         const requestData = {
             seatId,
             userId: user.id,
-            isConfirmed: true,
+            isConfirmed,
         };
+        console.log(requestData);
 
         try {
             const response = await axios.post('http://localhost:8080/api/seats/cancel', requestData);
 
+            // Якщо сервер вимагає підтвердження
+            if (!response.data.totalReturn) {
+                this.setState({
+                    showConfirmModal: true,
+                    confirmMessage: response.data.text,
+                    confirmSeatId: seatId,
+                    confirmFlightId: flightId,
+                    isConfirmed: true,  // При відкритті модального вікна підтвердження
+                });
+                return;
+            }
+
+            // Успішне скасування
             this.setState((prevState) => ({
-                returnMessage: 'Seat successfully cancelled',
-                reservations: prevState.reservations.map((dto) => 
-                    dto.flight.id === flightId 
-                    ? {
-                        ...dto,
-                        seatsList: dto.seatsList.filter((seat) => seat.id !== seatId),
-                        flight: {
-                            ...dto.flight,
-                            reservedSeats: dto.flight.reservedSeats - 1
+                returnMessage: response.data.text || 'Seat successfully cancelled',
+                reservations: prevState.reservations.map((dto) =>
+                    dto.flight.id === flightId
+                        ? {
+                            ...dto,
+                            seatsList: dto.seatsList.filter((seat) => seat.id !== seatId),
+                            flight: {
+                                ...dto.flight,
+                                reservedSeats: dto.flight.reservedSeats - 1,
+                            },
                         }
-                    }
-                    : dto
+                        : dto
                 ),
             }));
 
             setTimeout(() => {
                 this.setState({ returnMessage: '' });
             }, 3000);
-
         } catch (error) {
             console.error('Error cancelling seat:', error);
-            this.setState({ 
-                returnMessage: error.response?.data?.message || 'Failed to cancel seat' 
+            this.setState({
+                returnMessage: error.response?.data?.message || 'Failed to cancel seat',
             });
 
             setTimeout(() => {
@@ -66,8 +85,24 @@ class ReservationList extends React.Component {
         }
     };
 
+    // Підтвердження скасування
+    handleConfirmCancel = () => {
+        const { confirmSeatId, confirmFlightId } = this.state;
+        this.handleCancelSeat(confirmSeatId, confirmFlightId, true);  // Передаємо isConfirmed як true
+        this.setState({ showConfirmModal: false, confirmSeatId: null, confirmFlightId: null });
+    };
+
+    // Закриття модального вікна без підтвердження
+    handleCloseModal = () => {
+        this.setState({
+            showConfirmModal: false,
+            confirmSeatId: null,
+            confirmFlightId: null,
+        });
+    };
+
     render() {
-        const { returnMessage, reservations } = this.state;
+        const { returnMessage, reservations, showConfirmModal, confirmMessage } = this.state;
 
         return (
             <div className="reservation-list">
@@ -112,14 +147,18 @@ class ReservationList extends React.Component {
                                         <ul>
                                             {dto.seatsList.map((seat) => (
                                                 <li key={seat.id} className="seat-info">
-                                                    <p><strong>Seat:</strong> {seat.seatName}</p>
+                                                    <p>
+                                                        <strong>Seat:</strong> {seat.seatName}
+                                                    </p>
                                                     <p>
                                                         <strong>Available:</strong>{' '}
                                                         {seat.available ? 'Yes' : 'No'}
                                                     </p>
                                                     <button
                                                         className="cancel-btn"
-                                                        onClick={() => this.handleCancelSeat(seat.id, dto.flight.id)}
+                                                        onClick={() =>
+                                                            this.handleCancelSeat(seat.id, dto.flight.id, false)  // Відправляємо false, якщо користувач ще не підтвердив скасування
+                                                        }
                                                     >
                                                         Cancel Seat
                                                     </button>
@@ -136,6 +175,19 @@ class ReservationList extends React.Component {
                         <p>No flights found.</p>
                     )}
                 </ul>
+                {showConfirmModal && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <p>{confirmMessage}</p>
+                            <button className="confirm-btn" onClick={this.handleConfirmCancel}>
+                                Confirm
+                            </button>
+                            <button className="cancel-btn" onClick={this.handleCloseModal}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }

@@ -1,7 +1,6 @@
 // CreateFlightPage.js
 import React, { useState, useEffect } from 'react';
 import RoutesService from '../services/RoutesService';
-import PassengersService from '../services/PassengersService';
 import FlightForm from '../components/FlightForm';
 import FlightListAdmin from '../components/FlightListAdmin';
 import RouteForm from '../components/RouteForm';
@@ -9,7 +8,6 @@ import '../styles/CreateFlightPage.css';
 
 const CreateFlightPage = () => {
     const [routes, setRoutes] = useState([]);
-    const [passengers, setPassengers] = useState([]);
 
     useEffect(() => {
         const fetchRoutes = async () => {
@@ -21,17 +19,7 @@ const CreateFlightPage = () => {
             }
         };
 
-        const fetchPassengers = async () => {
-            try {
-                const passengersData = await PassengersService.getAllPassengers();
-                setPassengers(passengersData);
-            } catch (error) {
-                console.error('Error fetching passengers:', error);
-            }
-        };
-
         fetchRoutes();
-        fetchPassengers();
     }, []);
 
     const handleRouteAdded = (newRoute) => {
@@ -41,14 +29,13 @@ const CreateFlightPage = () => {
     return (
         <div>
         <div className="create-flight-page-container">
-            <h2>Add Passenger</h2>
 
             <h2>Add Route</h2>
             <RouteForm onRouteAdded={handleRouteAdded} />
 
             <h1>Create Flight</h1>
         </div>
-        <FlightForm passengers={passengers} routes={routes} />
+        <FlightForm routes={routes} />
         <FlightListAdmin /> 
         </div>
     );

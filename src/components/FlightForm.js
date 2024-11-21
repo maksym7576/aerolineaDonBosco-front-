@@ -8,7 +8,6 @@ const FlightForm = ({ passengers, routes }) => {
     const [capacity, setCapacity] = useState('');
     const [reservedSeats, setReservedSeats] = useState(0);
     const [departureTime, setDepartureTime] = useState('');
-    const [costEuro, setCostEuro] = useState('');
     const [file, setFile] = useState(null);
     const [error, setError] = useState('');
 
@@ -32,7 +31,7 @@ const FlightForm = ({ passengers, routes }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (selectedRoutes.length !== 2 || !departureTime || !capacity || !costEuro || !file) {
+        if (selectedRoutes.length !== 2 || !departureTime || !capacity || !file) {
             setError('All fields are required.');
             return;
         }
@@ -48,7 +47,6 @@ const FlightForm = ({ passengers, routes }) => {
                 destination: { id: destination.id },
                 capacity: parseInt(capacity),
                 reservedSeats: parseInt(reservedSeats),
-                costEuro: parseFloat(costEuro),
             };
 
             // Create flight
@@ -66,7 +64,6 @@ const FlightForm = ({ passengers, routes }) => {
             setCapacity('');
             setReservedSeats(0);
             setDepartureTime('');
-            setCostEuro('');
             setFile(null);
             setError('');
         } catch (err) {
@@ -111,12 +108,12 @@ const FlightForm = ({ passengers, routes }) => {
                         value={reservedSeats}
                         onChange={(e) => setReservedSeats(e.target.value)}
                     />
-                    <input
+                    {/* <input
                         type="number"
                         placeholder="Cost in Euro"
                         value={costEuro}
                         onChange={(e) => setCostEuro(e.target.value)}
-                    />
+                    /> */}
                 </div>
 
                 <div className="file-input-container">
